@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { MouseEventHandler, useState } from 'react';
 import { Component, useComponentsStore } from '../../stores/components';
 import { useComponentConfigStore } from '../../stores/component-config';
+import HoverMask from '../HoverMask';
 /**
  * @description 组件编辑区域即画布区域
  */
@@ -28,5 +29,37 @@ export function EditArea() {
 		});
 	}
 
-	return <div className='h-[100%]'>{renderComponents(components)}</div>;
+	const [hoverComponentId, setHoverComponentId] = useState<number>();
+
+	const handleMouseOver: MouseEventHandler = (e) => {
+		const path = e.nativeEvent.composedPath();
+
+		for (let i = 0; i < path.length; i++) {
+			const ele = path[i] as HTMLElement;
+
+			const componentId = ele.dataset.componentId;
+			if (componentId) {
+				setHoverComponentId(+componentId);
+				return;
+			}
+		}
+	};
+
+	return (
+		<div
+			className='h-[100%] edit-area'
+			onMouseOver={handleMouseOver}
+			onMouseLeave={() => setHoverComponentId(undefined)}
+		>
+			{renderComponents(components)}
+			{hoverComponentId && (
+				<HoverMask
+					portalWrapperClassName='portal-wrapper'
+					containerClassName='edit-area'
+					componentId={hoverComponentId}
+				/>
+			)}
+			<div className='portal-wrapper'></div>
+		</div>
+	);
 }
