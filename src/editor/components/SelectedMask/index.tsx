@@ -30,10 +30,16 @@ function SelectedMask({
 	useEffect(() => {
 		updatePosition();
 	}, [componentId]);
-
+	// 删除后更新
 	useEffect(() => {
 		updatePosition();
 	}, [components]);
+	// 窗口变化时更新位置
+	const maskElement = document.querySelector(`.${portalWrapperClassName}`);
+	const resizeObserver = new ResizeObserver(() => {
+		updatePosition();
+	});
+	resizeObserver.observe(maskElement!);
 
 	function updatePosition() {
 		if (!componentId) return;
@@ -77,7 +83,7 @@ function SelectedMask({
 		deleteComponent(componentId!);
 		setCurComponentId(null);
 	}
-
+	// 找寻当前组件的所有父组件-用于Dropdown的菜单
 	const parentComponents = useMemo(() => {
 		const parentComponents = [];
 		let component = curComponent;
