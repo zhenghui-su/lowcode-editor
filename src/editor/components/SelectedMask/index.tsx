@@ -125,7 +125,6 @@ function SelectedMask({
 				<Space>
 					<Dropdown
 						menu={{
-							// eslint-disable-next-line @typescript-eslint/no-explicit-any
 							items: parentComponents.map((item: any) => ({
 								key: item.id,
 								label: item.desc,

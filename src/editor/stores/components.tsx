@@ -6,7 +6,6 @@ import { create } from 'zustand';
 export interface Component {
 	id: number;
 	name: string;
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	props: any;
 	desc: string;
 	children?: Component[];

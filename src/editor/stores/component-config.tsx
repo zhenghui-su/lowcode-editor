@@ -5,10 +5,8 @@ import Page from '../materials/Page';
 
 export interface ComponentConfig {
 	name: string;
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	defaultProps: Record<string, any>;
 	desc: string;
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	component: any;
 }
 // 组件映射配置
