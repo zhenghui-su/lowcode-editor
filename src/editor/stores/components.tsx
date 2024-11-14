@@ -13,6 +13,8 @@ export interface Component {
 }
 interface State {
 	components: Component[];
+	curComponentId?: number | null;
+	curComponent: Component | null;
 }
 
 interface Action {
@@ -20,6 +22,7 @@ interface Action {
 	deleteComponent: (componentId: number) => void;
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	updateComponentProps: (componentId: number, props: any) => void;
+	setCurComponentId: (componentId: number | null) => void;
 }
 /**
  * @returns {Component} components 组件列表
@@ -36,6 +39,14 @@ export const useComponentsStore = create<State & Action>((set, get) => ({
 			desc: '页面',
 		},
 	],
+	curComponentId: null,
+	curComponent: null,
+	setCurComponentId: (componentId) => {
+		set((state) => ({
+			curComponentId: componentId,
+			curComponent: getComponentById(componentId, state.components),
+		}));
+	},
 	addComponent: (component, parentId) =>
 		set((state) => {
 			// 根据父id查找父组件
