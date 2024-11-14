@@ -2,12 +2,13 @@ import { useDrag } from 'react-dnd';
 
 export interface MaterialItemProps {
 	name: string;
+	desc: string;
 }
 /**
  * @description 物料项-添加useDrag
  */
 export function MaterialItem(props: MaterialItemProps) {
-	const { name } = props;
+	const { name, desc } = props;
 
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const [_, drag] = useDrag({
@@ -32,7 +33,7 @@ export function MaterialItem(props: MaterialItemProps) {
             hover:bg-[#ccc]
         '
 		>
-			{name}
+			{desc}
 		</div>
 	);
 }

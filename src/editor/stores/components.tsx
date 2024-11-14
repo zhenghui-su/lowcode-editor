@@ -8,6 +8,7 @@ export interface Component {
 	name: string;
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	props: any;
+	desc: string;
 	children?: Component[];
 	parantId?: number;
 }

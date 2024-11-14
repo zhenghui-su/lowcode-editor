@@ -122,7 +122,7 @@ function SelectedMask({
 							// eslint-disable-next-line @typescript-eslint/no-explicit-any
 							items: parentComponents.map((item: any) => ({
 								key: item.id,
-								label: item.name,
+								label: item.desc,
 							})),
 							onClick: ({ key }) => {
 								setCurComponentId(+key);
@@ -140,7 +140,7 @@ function SelectedMask({
 								whiteSpace: 'nowrap',
 							}}
 						>
-							{curComponent?.name}
+							{curComponent?.desc}
 						</div>
 					</Dropdown>
 					{curComponentId !== 1 && (
