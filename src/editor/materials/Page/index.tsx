@@ -1,7 +1,7 @@
 import { CommonComponentProps } from '../../interface';
 import { useMaterialDrop } from '../../hooks/useMaterialDrop';
 
-function Page({ id, children }: CommonComponentProps) {
+function Page({ id, children, styles }: CommonComponentProps) {
 	const { canDrop, drop } = useMaterialDrop(['Button', 'Container'], id);
 
 	return (
@@ -9,7 +9,7 @@ function Page({ id, children }: CommonComponentProps) {
 			data-component-id={id}
 			ref={drop}
 			className='p-[20px] h-[100%] box-border'
-			style={{ border: canDrop ? '2px solid blue' : 'none' }}
+			style={{ ...styles, border: canDrop ? '2px solid blue' : 'none' }}
 		>
 			{children}
 		</div>
