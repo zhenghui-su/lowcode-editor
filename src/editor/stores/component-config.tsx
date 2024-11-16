@@ -20,6 +20,7 @@ export interface ComponentConfig {
 	defaultProps: Record<string, any>;
 	desc: string;
 	setter?: ComponentSetter[];
+	stylesSetter?: ComponentSetter[]; // 样式配置
 	component: any;
 }
 // 组件映射配置
@@ -62,6 +63,18 @@ export const useComponentConfigStore = create<State & Action>((set) => ({
 					name: 'text',
 					label: '文本',
 					type: 'input',
+				},
+			],
+			stylesSetter: [
+				{
+					name: 'width',
+					label: '宽度',
+					type: 'inputNumber',
+				},
+				{
+					name: 'height',
+					label: '高度',
+					type: 'inputNumber',
 				},
 			],
 			desc: '按钮',

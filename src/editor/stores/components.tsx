@@ -1,3 +1,4 @@
+import { CSSProperties } from 'react';
 import { create } from 'zustand';
 
 /**
@@ -7,6 +8,7 @@ export interface Component {
 	id: number;
 	name: string;
 	props: any;
+	styles?: CSSProperties;
 	desc: string;
 	children?: Component[];
 	parantId?: number;
@@ -20,8 +22,12 @@ interface State {
 interface Action {
 	addComponent: (component: Component, parentId?: number) => void;
 	deleteComponent: (componentId: number) => void;
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	updateComponentProps: (componentId: number, props: any) => void;
+	updateComponentStyles: (
+		componentId: number,
+		styles: CSSProperties,
+		replace?: boolean,
+	) => void;
 	setCurComponentId: (componentId: number | null) => void;
 }
 /**
@@ -96,6 +102,20 @@ export const useComponentsStore = create<State & Action>((set, get) => ({
 					...component.props,
 					...props,
 				};
+				return { components: [...state.components] };
+			}
+
+			return { components: [...state.components] };
+		});
+	},
+	updateComponentStyles: (componentId, styles, replace) => {
+		set((state) => {
+			const component = getComponentById(componentId, state.components);
+			if (component) {
+				// 支持样式覆盖用以css编辑器修改
+				component.styles = replace
+					? { ...styles }
+					: { ...component.styles, ...styles };
 				return { components: [...state.components] };
 			}
 
