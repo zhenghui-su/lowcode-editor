@@ -32,7 +32,11 @@ function SelectedMask({
 	}, [componentId]);
 	// 删除后更新
 	useEffect(() => {
-		updatePosition();
+		// ? 在样式变化后到渲染完成再获取改变后的宽高需要时间，所以延迟一下
+		// ? 虽然大部分情况下不会有延迟
+		setTimeout(() => {
+			updatePosition();
+		}, 200);
 	}, [components]);
 	// 窗口变化时更新位置
 	const maskElement = document.querySelector(`.${portalWrapperClassName}`);
