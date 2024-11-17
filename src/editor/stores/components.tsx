@@ -15,6 +15,7 @@ export interface Component {
 }
 interface State {
 	components: Component[];
+	mode: 'edit' | 'preview';
 	curComponentId?: number | null;
 	curComponent: Component | null;
 }
@@ -29,6 +30,7 @@ interface Action {
 		replace?: boolean,
 	) => void;
 	setCurComponentId: (componentId: number | null) => void;
+	setMode: (mode: State['mode']) => void;
 }
 /**
  * @returns {Component} components 组件列表
@@ -47,6 +49,8 @@ export const useComponentsStore = create<State & Action>((set, get) => ({
 	],
 	curComponentId: null,
 	curComponent: null,
+	mode: 'edit',
+	setMode: (mode) => set({ mode }),
 	setCurComponentId: (componentId) => {
 		set((state) => ({
 			curComponentId: componentId,
