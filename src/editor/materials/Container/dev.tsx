@@ -1,7 +1,7 @@
 import { CommonComponentProps } from '../../interface';
 import { useMaterialDrop } from '../../hooks/useMaterialDrop';
 /**
- * @description 容器组件
+ * @description 容器组件-dev开发状态
  */
 const Container = ({ id, children, styles }: CommonComponentProps) => {
 	const { canDrop, drop } = useMaterialDrop(['Button', 'Container'], id);
