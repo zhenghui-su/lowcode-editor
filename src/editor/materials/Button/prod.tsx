@@ -5,9 +5,9 @@ import { CommonComponentProps } from '../../interface';
  * @description 按钮组件-prod预览状态
  */
 
-const Button = ({ type, text, styles }: CommonComponentProps) => {
+const Button = ({ id, type, text, styles, ...props }: CommonComponentProps) => {
 	return (
-		<AntdButton type={type} style={styles}>
+		<AntdButton type={type} style={styles} {...props}>
 			{text}
 		</AntdButton>
 	);
