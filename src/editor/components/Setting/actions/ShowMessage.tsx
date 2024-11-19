@@ -1,69 +1,87 @@
 import { Input, Select } from 'antd';
-import { ComponentEvent } from '../../../stores/component-config';
 import { useComponentsStore } from '../../../stores/components';
+import { useState } from 'react';
+
+export interface ShowMessageConfig {
+	type: 'showMessage';
+	config: {
+		type: 'success' | 'error';
+		text: string;
+	};
+}
+
+export interface ShowMessageProps {
+	value?: ShowMessageConfig['config'];
+	onChange?: (config: ShowMessageConfig) => void;
+}
 /**
  * @description 显示消息事件行为
  */
-export function ShowMessage(props: { event: ComponentEvent }) {
-	const { event } = props;
+export function ShowMessage(props: ShowMessageProps) {
+	const { value, onChange } = props;
 
-	const { curComponentId, curComponent, updateComponentProps } =
-		useComponentsStore();
+	const { curComponentId } = useComponentsStore();
 
-	function messageTypeChange(eventName: string, value: string) {
+	const [type, setType] = useState<'success' | 'error'>(
+		value?.type || 'success',
+	);
+	const [text, setText] = useState<string>(value?.text || '');
+
+	function messageTypeChange(value: 'success' | 'error') {
 		if (!curComponentId) return;
 
-		updateComponentProps(curComponentId, {
-			[eventName]: {
-				...curComponent?.props?.[eventName],
-				config: {
-					...curComponent?.props?.[eventName]?.config,
-					type: value,
-				},
+		setType(value);
+
+		onChange?.({
+			type: 'showMessage',
+			config: {
+				type: value,
+				text,
 			},
 		});
 	}
 
-	function messageTextChange(eventName: string, value: string) {
+	function messageTextChange(value: string) {
 		if (!curComponentId) return;
 
-		updateComponentProps(curComponentId, {
-			[eventName]: {
-				...curComponent?.props?.[eventName],
-				config: {
-					...curComponent?.props?.[eventName]?.config,
-					text: value,
-				},
+		setText(value);
+
+		onChange?.({
+			type: 'showMessage',
+			config: {
+				type,
+				text: value,
 			},
 		});
 	}
 
 	return (
-		<div className='mt-[10px]'>
-			<div className='flex items-center gap-[10px]'>
+		<div className='mt-[30px]'>
+			<div className='flex items-center gap-[20px]'>
 				<div>类型：</div>
 				<div>
 					<Select
-						style={{ width: 160 }}
+						style={{ width: 500, height: 50 }}
 						options={[
 							{ label: '成功', value: 'success' },
 							{ label: '失败', value: 'error' },
 						]}
 						onChange={(value) => {
-							messageTypeChange(event.name, value);
+							messageTypeChange(value);
 						}}
-						value={curComponent?.props?.[event.name]?.config?.type}
+						value={type}
 					/>
 				</div>
 			</div>
-			<div className='flex items-center gap-[10px] mt-[10px]'>
+			<div className='flex items-center gap-[20px] mt-[50px]'>
 				<div>文本：</div>
 				<div>
 					<Input
+						style={{ width: 500, height: 50 }}
 						onChange={(e) => {
-							messageTextChange(event.name, e.target.value);
+							messageTextChange(e.target.value);
 						}}
-						value={curComponent?.props?.[event.name]?.config?.text}
+						value={text}
 					/>
 				</div>
 			</div>
