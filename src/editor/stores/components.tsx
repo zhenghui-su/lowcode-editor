@@ -11,7 +11,7 @@ export interface Component {
 	styles?: CSSProperties;
 	desc: string;
 	children?: Component[];
-	parantId?: number;
+	parentId?: number;
 }
 interface State {
 	components: Component[];
@@ -71,7 +71,7 @@ export const useComponentsStore = create<State & Action>((set, get) => ({
 					}
 				}
 
-				component.parantId = parentId;
+				component.parentId = parentId;
 				return { components: [...state.components] };
 			}
 			// 找不到父组件就放到根组件components里
@@ -82,9 +82,9 @@ export const useComponentsStore = create<State & Action>((set, get) => ({
 
 		const component = getComponentById(componentId, get().components);
 		// 找到要删除节点的parent组件然后对其children删除
-		if (component?.parantId) {
+		if (component?.parentId) {
 			const parentComponent = getComponentById(
-				component.parantId,
+				component.parentId,
 				get().components,
 			);
 

@@ -92,8 +92,8 @@ function SelectedMask({
 		const parentComponents = [];
 		let component = curComponent;
 
-		while (component?.parantId) {
-			component = getComponentById(component.parantId, components);
+		while (component?.parentId) {
+			component = getComponentById(component.parentId, components);
 			parentComponents.push(component);
 		}
 		return parentComponents;
