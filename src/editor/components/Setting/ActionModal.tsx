@@ -1,14 +1,16 @@
 import { useState } from 'react';
 import { Modal, Segmented } from 'antd';
-import { GoToLink } from './actions/GoToLink';
-import { ShowMessage } from './actions/ShowMessage';
-import { ActionConfig } from './actions/actionConfig';
+import { GoToLink, GoToLinkConfig } from './actions/GoToLink';
+import { ShowMessage, ShowMessageConfig } from './actions/ShowMessage';
+import { CustomJS, CustomJSConfig } from './actions/CusTomJS';
 
 interface ActionModalProps {
 	visible: boolean;
 	handleOk: (config?: ActionConfig) => void;
 	handleCancel: () => void;
 }
+
+export type ActionConfig = GoToLinkConfig | ShowMessageConfig | CustomJSConfig;
 /**
  * 组件事件动作配置弹窗
  */
@@ -44,6 +46,13 @@ export function ActionModal(props: ActionModalProps) {
 				)}
 				{key === '消息提示' && (
 					<ShowMessage
+						onChange={(config) => {
+							setCurConfig(config);
+						}}
+					/>
+				)}
+				{key === '自定义 JS' && (
+					<CustomJS
 						onChange={(config) => {
 							setCurConfig(config);
 						}}

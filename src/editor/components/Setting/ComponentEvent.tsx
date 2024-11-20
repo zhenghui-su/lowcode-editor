@@ -4,7 +4,7 @@ import type { ComponentEvent } from '../../stores/component-config';
 import { useComponentsStore } from '../../stores/components';
 import { useState } from 'react';
 import { ActionModal } from './ActionModal';
-import { ActionConfig } from './actions/actionConfig';
+import { ActionConfig } from './ActionModal';
 import { DeleteOutlined } from '@ant-design/icons';
 
 /**
@@ -82,6 +82,25 @@ export function ComponentEvent() {
 											<div className='text-[blue]'>消息弹窗</div>
 											<div>{item.config.type}</div>
 											<div>{item.config.text}</div>
+											<div
+												style={{
+													position: 'absolute',
+													top: 10,
+													right: 10,
+													cursor: 'pointer',
+												}}
+												onClick={() => deleteAction(event, index)}
+											>
+												<DeleteOutlined />
+											</div>
+										</div>
+									) : null}
+									{item.type === 'customJS' ? (
+										<div
+											key='customJS'
+											className='border border-[#aaa] m-[10px] p-[10px] relative'
+										>
+											<div className='text-[blue]'>自定义 JS</div>
 											<div
 												style={{
 													position: 'absolute',

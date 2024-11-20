@@ -2,7 +2,7 @@ import React from 'react';
 import { useComponentConfigStore } from '../../stores/component-config';
 import { Component, useComponentsStore } from '../../stores/components';
 import { message } from 'antd';
-import { ActionConfig } from '../Setting/actions/actionConfig';
+import { ActionConfig } from '../Setting/ActionModal';
 
 /**
  * @description 编辑区组件-全部预览
@@ -28,6 +28,15 @@ export function Preview() {
 							} else if (action.config.type === 'error') {
 								message.error(action.config.text);
 							}
+						} else if (action.type === 'customJS') {
+							const func = new Function('context', action.code);
+							func({
+								name: component.name,
+								props: component.props,
+								ShowMessage(content: string) {
+									message.success(content);
+								},
+							});
 						}
 					});
 				};
