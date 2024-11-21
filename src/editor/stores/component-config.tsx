@@ -3,6 +3,8 @@ import ContainerDev from '../materials/Container/dev';
 import ContainerProd from '../materials/Container/prod';
 import ButtonDev from '../materials/Button/dev';
 import ButtonProd from '../materials/Button/prod';
+import ModalDev from '../materials/Modal/dev';
+import ModalProd from '../materials/Modal/prod';
 import PageDev from '../materials/Page/dev';
 import PageProd from '../materials/Page/prod';
 
@@ -22,7 +24,13 @@ export interface ComponentEvent {
 	name: string;
 	label: string;
 }
-
+/**
+ * 组件方法配置-用于组件联动
+ */
+export interface ComponentMethod {
+	name: string;
+	label: string;
+}
 /**
  * 组件配置
  */
@@ -33,6 +41,7 @@ export interface ComponentConfig {
 	setter?: ComponentSetter[]; // 属性配置
 	stylesSetter?: ComponentSetter[]; // 样式配置
 	events?: ComponentEvent[]; // 事件配置
+	methods?: ComponentMethod[]; // 方法配置
 	dev: any;
 	prod: any;
 }
@@ -104,6 +113,43 @@ export const useComponentConfigStore = create<State & Action>((set) => ({
 			desc: '按钮',
 			dev: ButtonDev,
 			prod: ButtonProd,
+		},
+		Modal: {
+			name: 'Modal',
+			defaultProps: {
+				title: '弹窗',
+			},
+			setter: [
+				{
+					name: 'title',
+					label: '标题',
+					type: 'input',
+				},
+			],
+			stylesSetter: [],
+			events: [
+				{
+					name: 'onOpen',
+					label: '确认事件',
+				},
+				{
+					name: 'onClose',
+					label: '取消事件',
+				},
+			],
+			methods: [
+				{
+					name: 'open',
+					label: '打开弹窗',
+				},
+				{
+					name: 'close',
+					label: '关闭弹窗',
+				},
+			],
+			desc: '弹窗',
+			dev: ModalDev,
+			prod: ModalProd,
 		},
 		Page: {
 			name: 'Page',
