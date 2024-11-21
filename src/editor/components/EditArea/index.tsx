@@ -40,7 +40,7 @@ export function EditArea() {
 		for (let i = 0; i < path.length; i++) {
 			const ele = path[i] as HTMLElement;
 
-			const componentId = ele.dataset.componentId;
+			const componentId = ele.dataset?.componentId;
 			if (componentId) {
 				setHoverComponentId(+componentId);
 				return;
@@ -53,7 +53,7 @@ export function EditArea() {
 		for (let i = 0; i < path.length; i++) {
 			const ele = path[i] as HTMLElement;
 
-			const componentId = ele.dataset.componentId;
+			const componentId = ele.dataset?.componentId;
 			if (componentId) {
 				setCurComponentId(+componentId);
 				return;
