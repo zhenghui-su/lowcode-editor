@@ -6,7 +6,7 @@ import { CommonComponentProps } from '../../interface';
  */
 function Modal({ id, children, title, styles }: CommonComponentProps) {
 	const { canDrop, drop } = useMaterialDrop(['Button', 'Container'], id);
-
+	// TODO 编辑区域也支持拖拽
 	return (
 		<div
 			ref={drop}

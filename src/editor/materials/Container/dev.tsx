@@ -5,7 +5,7 @@ import { useMaterialDrop } from '../../hooks/useMaterialDrop';
  */
 const Container = ({ id, children, styles }: CommonComponentProps) => {
 	const { canDrop, drop } = useMaterialDrop(['Button', 'Container'], id);
-
+	// TODO 编辑区域也支持拖拽
 	return (
 		<div
 			data-component-id={id}
