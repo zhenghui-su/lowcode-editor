@@ -7,7 +7,10 @@ import { useDrag } from 'react-dnd';
  * @description 弹框组件-dev开发状态
  */
 function Modal({ id, name, children, title, styles }: CommonComponentProps) {
-	const { canDrop, drop } = useMaterialDrop(['Button', 'Container'], id);
+	const { canDrop, drop } = useMaterialDrop(
+		['Button', 'Container', 'Table'],
+		id,
+	);
 
 	const divRef = useRef<HTMLDivElement>(null);
 

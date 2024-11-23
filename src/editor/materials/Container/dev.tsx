@@ -6,7 +6,10 @@ import { useDrag } from 'react-dnd';
  * @description 容器组件-dev开发状态
  */
 const Container = ({ id, name, children, styles }: CommonComponentProps) => {
-	const { canDrop, drop } = useMaterialDrop(['Button', 'Container'], id);
+	const { canDrop, drop } = useMaterialDrop(
+		['Button', 'Container', 'Table'],
+		id,
+	);
 
 	const divRef = useRef<HTMLDivElement>(null);
 
