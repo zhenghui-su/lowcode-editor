@@ -18,10 +18,14 @@ export function ComponentAttr() {
 		useComponentsStore();
 	const { componentConfig } = useComponentConfigStore();
 
+	// useEffect(() => {
+	// 	// 当curComponent即选择组件变化时, 将组件的props设置到表单用以回显数据
+	// 	const data = form.getFieldsValue();
+	// 	form.setFieldsValue({ ...data, ...curComponent?.props });
+	// }, [curComponent]);
 	useEffect(() => {
-		// 当curComponent即选择组件变化时, 将组件的props设置到表单用以回显数据
-		const data = form.getFieldsValue();
-		form.setFieldsValue({ ...data, ...curComponent?.props });
+		form.resetFields();
+		form.setFieldsValue({ ...curComponent?.props });
 	}, [curComponent]);
 	// 没有选择组件时候返回null
 	if (!curComponentId || !curComponent) return null;
@@ -60,7 +64,21 @@ export function ComponentAttr() {
 				<Input value={curComponent.desc} disabled />
 			</Form.Item>
 			{componentConfig[curComponent.name]?.setter?.map((setter) => (
-				<Form.Item key={setter.name} name={setter.name} label={setter.label}>
+				<Form.Item
+					key={setter.name}
+					name={setter.name}
+					label={setter.label}
+					rules={
+						setter.required
+							? [
+									{
+										required: true,
+										message: '不能为空',
+									},
+							  ]
+							: []
+					}
+				>
 					{renderFormElement(setter)}
 				</Form.Item>
 			))}
