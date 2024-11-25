@@ -1,5 +1,6 @@
 import { CSSProperties } from 'react';
-import { create } from 'zustand';
+import { create, StateCreator } from 'zustand';
+import { persist } from 'zustand/middleware';
 
 /**
  * 组件定义类型
@@ -32,13 +33,8 @@ interface Action {
 	setCurComponentId: (componentId: number | null) => void;
 	setMode: (mode: State['mode']) => void;
 }
-/**
- * @returns {Component} components 组件列表
- * @returns {funciton} addComponent 添加组件
- * @returns {funciton} deleteComponent 删除组件
- * @returns {funciton} updateComponentProps 更新组件属性
- */
-export const useComponentsStore = create<State & Action>((set, get) => ({
+
+const creator: StateCreator<State & Action> = (set, get) => ({
 	components: [
 		{
 			id: 1,
@@ -126,7 +122,18 @@ export const useComponentsStore = create<State & Action>((set, get) => ({
 			return { components: [...state.components] };
 		});
 	},
-}));
+});
+
+export const useComponentsStore = create<State & Action>()(
+	persist(creator, {
+		name: 'components',
+		partialize: (state) => {
+			// 过滤掉 curComponentId
+			const { curComponentId, ...restState } = state;
+			return restState;
+		},
+	}),
+);
 
 export function getComponentById(
 	id: number | null,
