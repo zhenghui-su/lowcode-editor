@@ -8,7 +8,7 @@ import { useDrag } from 'react-dnd';
  */
 function Modal({ id, name, children, title, styles }: CommonComponentProps) {
 	const { canDrop, drop } = useMaterialDrop(
-		['Button', 'Container', 'Table'],
+		['Button', 'Container', 'Table', 'Form'],
 		id,
 	);
 
