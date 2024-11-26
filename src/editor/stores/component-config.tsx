@@ -15,6 +15,7 @@ import FormDev from '../materials/Form/dev';
 import FormProd from '../materials/Form/prod';
 import FormItemDev from '../materials/FormItem/dev';
 import FormItemProd from '../materials/FormItem/prod';
+import LineDev from '../materials/Line/dev';
 
 /**
  * 组件属性表单配置
@@ -291,6 +292,50 @@ export const useComponentConfigStore = create<State & Action>((set) => ({
 							value: 'required',
 						},
 					],
+				},
+			],
+		},
+		Line: {
+			name: 'Line',
+			defaultProps: {
+				width: '700px',
+				height: '400px',
+				options: {
+					xAxis: {
+						type: 'category',
+						data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+					},
+					yAxis: {
+						type: 'value',
+					},
+					series: [
+						{
+							data: [150, 230, 224, 218, 135, 147, 260],
+							type: 'line',
+						},
+					],
+				},
+			},
+			desc: '折线图',
+			dev: LineDev,
+			prod: LineDev,
+			setter: [
+				{
+					name: 'options',
+					label: 'Echarts配置',
+					type: 'json',
+				},
+			],
+			stylesSetter: [
+				{
+					name: 'width',
+					label: '宽度',
+					type: 'inputNumber',
+				},
+				{
+					name: 'height',
+					label: '高度',
+					type: 'inputNumber',
 				},
 			],
 		},

@@ -5,7 +5,9 @@ import {
 	ComponentSetter,
 	useComponentConfigStore,
 } from '../../stores/component-config';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import MonacoEditor, { OnMount } from '@monaco-editor/react';
+import { debounce } from 'lodash-es';
 
 /**
  *
@@ -18,11 +20,16 @@ export function ComponentAttr() {
 		useComponentsStore();
 	const { componentConfig } = useComponentConfigStore();
 
-	// useEffect(() => {
-	// 	// 当curComponent即选择组件变化时, 将组件的props设置到表单用以回显数据
-	// 	const data = form.getFieldsValue();
-	// 	form.setFieldsValue({ ...data, ...curComponent?.props });
-	// }, [curComponent]);
+	const [chartOptions, setChartOptions] = useState(
+		JSON.stringify(curComponent?.props.options, null, 2),
+	);
+
+	// 格式化 ctrl + j 或 command + j
+	const handleEditorMount: OnMount = (editor, monaco) => {
+		editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyJ, () => {
+			editor.getAction('editor.action.formatDocument')?.run();
+		});
+	};
 	useEffect(() => {
 		form.resetFields();
 		form.setFieldsValue({ ...curComponent?.props });
@@ -38,15 +45,45 @@ export function ComponentAttr() {
 				return <Select options={options} />;
 			case 'input':
 				return <Input />;
+			case 'json':
+				return (
+					<div className='h-[600px] border-[1px] border-[#ccc] z-10'>
+						<MonacoEditor
+							height={'100%'}
+							path='options.json'
+							language='json'
+							onMount={handleEditorMount}
+							onChange={handleEditorChange}
+							value={chartOptions}
+							options={{
+								fontSize: 14,
+								scrollBeyondLastLine: false,
+								minimap: {
+									enabled: false,
+								},
+								scrollbar: {
+									verticalScrollbarSize: 6,
+									horizontalScrollbarSize: 6,
+								},
+							}}
+						/>
+					</div>
+				);
 		}
 	}
+	const handleEditorChange = debounce((value) => {
+		setChartOptions(value);
+		const options = JSON.parse(value);
+		try {
+			updateComponentProps(curComponentId, { options });
+		} catch (e) {}
+	}, 500);
 	// 当表单 value 变化的时候，同步到 store
 	function valueChange(changeValues: ComponentConfig) {
 		if (curComponentId) {
 			updateComponentProps(curComponentId, changeValues);
 		}
 	}
-
 	return (
 		<Form
 			form={form}
