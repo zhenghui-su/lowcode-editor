@@ -16,6 +16,7 @@ import FormProd from '../materials/Form/prod';
 import FormItemDev from '../materials/FormItem/dev';
 import FormItemProd from '../materials/FormItem/prod';
 import LineDev from '../materials/Line/dev';
+import LineProd from '../materials/Line/prod';
 
 /**
  * 组件属性表单配置
@@ -318,8 +319,13 @@ export const useComponentConfigStore = create<State & Action>((set) => ({
 			},
 			desc: '折线图',
 			dev: LineDev,
-			prod: LineDev,
+			prod: LineProd,
 			setter: [
+				{
+					name: 'smooth',
+					label: '平滑',
+					type: 'switch',
+				},
 				{
 					name: 'options',
 					label: 'Echarts配置',

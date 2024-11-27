@@ -1,7 +1,6 @@
-import { Form, Input, Select } from 'antd';
+import { Form, Input, Select, Switch } from 'antd';
 import { useComponentsStore } from '../../stores/components';
 import {
-	ComponentConfig,
 	ComponentSetter,
 	useComponentConfigStore,
 } from '../../stores/component-config';
@@ -45,6 +44,8 @@ export function ComponentAttr() {
 				return <Select options={options} />;
 			case 'input':
 				return <Input />;
+			case 'switch':
+				return <Switch />;
 			case 'json':
 				return (
 					<div className='h-[600px] border-[1px] border-[#ccc] z-10'>
@@ -79,8 +80,15 @@ export function ComponentAttr() {
 		} catch (e) {}
 	}, 500);
 	// 当表单 value 变化的时候，同步到 store
-	function valueChange(changeValues: ComponentConfig) {
-		if (curComponentId) {
+	function valueChange(changeValues: any) {
+		if (curComponent?.name === 'Line' && curComponentId) {
+			let options = JSON.parse(chartOptions);
+			options.series.map((item: any) => {
+				item.smooth = changeValues.smooth;
+			});
+			setChartOptions(JSON.stringify(options, null, 2));
+			updateComponentProps(curComponentId, { options });
+		} else if (curComponentId) {
 			updateComponentProps(curComponentId, changeValues);
 		}
 	}
