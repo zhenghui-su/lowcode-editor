@@ -6,6 +6,7 @@ interface HoverMaskProps {
 	portalWrapperClassName: string;
 	containerClassName: string;
 	componentId: number;
+	scrolling: boolean;
 }
 /**
  * 鼠标悬浮时，显示组件的边框
@@ -14,6 +15,7 @@ function HoverMask({
 	portalWrapperClassName,
 	containerClassName,
 	componentId,
+	scrolling,
 }: HoverMaskProps) {
 	const { components } = useComponentsStore();
 
@@ -31,8 +33,23 @@ function HoverMask({
 	}, [componentId]);
 
 	useEffect(() => {
-		updatePosition();
+		setTimeout(() => {
+			updatePosition();
+		}, 200);
 	}, [components]);
+
+	useEffect(() => {
+		if (scrolling) {
+			updatePosition();
+		}
+	}, [scrolling]);
+
+	// 窗口变化时更新位置
+	const maskElement = document.querySelector(`.${portalWrapperClassName}`);
+	const resizeObserver = new ResizeObserver(() => {
+		updatePosition();
+	});
+	resizeObserver.observe(maskElement!);
 
 	function updatePosition() {
 		if (!componentId) return;

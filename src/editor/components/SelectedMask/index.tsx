@@ -8,12 +8,14 @@ interface SelectedMaskProps {
 	portalWrapperClassName: string;
 	containerClassName: string;
 	componentId: number;
+	scrolling: boolean;
 }
 
 function SelectedMask({
 	portalWrapperClassName,
 	containerClassName,
 	componentId,
+	scrolling,
 }: SelectedMaskProps) {
 	const [position, setPosition] = useState({
 		left: 0,
@@ -44,7 +46,12 @@ function SelectedMask({
 		updatePosition();
 	});
 	resizeObserver.observe(maskElement!);
-	// TODO 滚动时更新位置
+	// 滚动时更新位置
+	useEffect(() => {
+		if (scrolling) {
+			updatePosition();
+		}
+	}, [scrolling]);
 
 	function updatePosition() {
 		if (!componentId) return;

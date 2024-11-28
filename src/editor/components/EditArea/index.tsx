@@ -1,8 +1,9 @@
-import React, { MouseEventHandler, useState } from 'react';
+import React, { MouseEventHandler, useRef, useState } from 'react';
 import { Component, useComponentsStore } from '../../stores/components';
 import { useComponentConfigStore } from '../../stores/component-config';
 import HoverMask from '../HoverMask';
 import SelectedMask from '../SelectedMask';
+import { useScrolling } from 'react-use';
 /**
  * @description 组件编辑区域即画布区域
  */
@@ -10,6 +11,10 @@ export function EditArea() {
 	const { components, curComponentId, setCurComponentId } =
 		useComponentsStore();
 	const { componentConfig } = useComponentConfigStore();
+
+	const scrollRef = useRef<HTMLDivElement>(null);
+	const scrolling = useScrolling(scrollRef);
+
 	// 递归渲染components 用到的组件配置从componentConfig取
 	function renderComponents(components: Component[]): React.ReactNode {
 		return components.map((component: Component) => {
@@ -74,6 +79,7 @@ export function EditArea() {
 					portalWrapperClassName='portal-wrapper'
 					containerClassName='edit-area'
 					componentId={hoverComponentId}
+					scrolling={scrolling}
 				/>
 			)}
 			{/* 鼠标点击时的边框 */}
@@ -82,6 +88,7 @@ export function EditArea() {
 					portalWrapperClassName='portal-wrapper'
 					containerClassName='edit-area'
 					componentId={curComponentId}
+					scrolling={scrolling}
 				/>
 			)}
 			<div className='portal-wrapper'></div>
