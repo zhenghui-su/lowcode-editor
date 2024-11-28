@@ -44,6 +44,7 @@ function SelectedMask({
 		updatePosition();
 	});
 	resizeObserver.observe(maskElement!);
+	// TODO 滚动时更新位置
 
 	function updatePosition() {
 		if (!componentId) return;

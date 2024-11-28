@@ -12,7 +12,7 @@ export interface FormRef {
 	submit: () => void;
 }
 
-const Form: ForwardRefRenderFunction<FormRef, CommonComponentProps> = (
+const Form: ForwardRefRenderFunction<FormRef, Omit<CommonComponentProps, "ref">> = (
 	{ children, onFinish },
 	ref,
 ) => {
@@ -86,5 +86,4 @@ const Form: ForwardRefRenderFunction<FormRef, CommonComponentProps> = (
 	);
 };
 
-// @ts-ignore
 export default forwardRef(Form);
