@@ -19,6 +19,8 @@ import LineDev from '../materials/Line/dev';
 import LineProd from '../materials/Line/prod';
 import BarDev from '../materials/Bar/dev';
 import BarProd from '../materials/Bar/prod';
+import PieDev from '../materials/Pie/dev';
+import PieProd from '../materials/Pie/prod';
 
 /**
  * 组件属性表单配置
@@ -371,6 +373,70 @@ export const useComponentConfigStore = create<State & Action>((set) => ({
 			desc: '柱状图',
 			dev: BarDev,
 			prod: BarProd,
+			setter: [
+				{
+					name: 'options',
+					label: 'Echarts配置',
+					type: 'json',
+				},
+			],
+			stylesSetter: [
+				{
+					name: 'width',
+					label: '宽度',
+					type: 'inputNumber',
+				},
+				{
+					name: 'height',
+					label: '高度',
+					type: 'inputNumber',
+				},
+			],
+		},
+		Pie: {
+			name: 'Pie',
+			defaultProps: {
+				width: '700px',
+				height: '400px',
+				options: {
+					title: {
+						text: 'Referer of a Website',
+						subtext: 'Fake Data',
+						left: 'center',
+					},
+					tooltip: {
+						trigger: 'item',
+					},
+					legend: {
+						orient: 'vertical',
+						left: 'left',
+					},
+					series: [
+						{
+							name: 'Access From',
+							type: 'pie',
+							radius: '50%',
+							data: [
+								{ value: 1048, name: 'Search Engine' },
+								{ value: 735, name: 'Direct' },
+								{ value: 580, name: 'Email' },
+								{ value: 484, name: 'Union Ads' },
+								{ value: 300, name: 'Video Ads' },
+							],
+							emphasis: {
+								itemStyle: {
+									shadowBlur: 10,
+									shadowOffsetX: 0,
+									shadowColor: 'rgba(0, 0, 0, 0.5)',
+								},
+							},
+						},
+					],
+				},
+			},
+			desc: '饼图',
+			dev: PieDev,
+			prod: PieProd,
 			setter: [
 				{
 					name: 'options',
