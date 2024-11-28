@@ -30,6 +30,7 @@ export function ComponentAttr() {
 		});
 	};
 	useEffect(() => {
+		setChartOptions(JSON.stringify(curComponent?.props.options, null, 2));
 		form.resetFields();
 		form.setFieldsValue({ ...curComponent?.props });
 	}, [curComponent]);
