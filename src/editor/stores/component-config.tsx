@@ -17,6 +17,8 @@ import FormItemDev from '../materials/FormItem/dev';
 import FormItemProd from '../materials/FormItem/prod';
 import LineDev from '../materials/Line/dev';
 import LineProd from '../materials/Line/prod';
+import BarDev from '../materials/Bar/dev';
+import BarProd from '../materials/Bar/prod';
 
 /**
  * 组件属性表单配置
@@ -326,6 +328,50 @@ export const useComponentConfigStore = create<State & Action>((set) => ({
 					label: '平滑',
 					type: 'switch',
 				},
+				{
+					name: 'options',
+					label: 'Echarts配置',
+					type: 'json',
+				},
+			],
+			stylesSetter: [
+				{
+					name: 'width',
+					label: '宽度',
+					type: 'inputNumber',
+				},
+				{
+					name: 'height',
+					label: '高度',
+					type: 'inputNumber',
+				},
+			],
+		},
+		Bar: {
+			name: 'Bar',
+			defaultProps: {
+				width: '700px',
+				height: '400px',
+				options: {
+					xAxis: {
+						type: 'category',
+						data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+					},
+					yAxis: {
+						type: 'value',
+					},
+					series: [
+						{
+							data: [120, 200, 150, 80, 70, 110, 130],
+							type: 'bar',
+						},
+					],
+				},
+			},
+			desc: '柱状图',
+			dev: BarDev,
+			prod: BarProd,
+			setter: [
 				{
 					name: 'options',
 					label: 'Echarts配置',
