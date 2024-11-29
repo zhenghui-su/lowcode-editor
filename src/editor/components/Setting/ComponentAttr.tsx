@@ -34,6 +34,10 @@ export function ComponentAttr() {
 		form.resetFields();
 		form.setFieldsValue({ ...curComponent?.props });
 	}, [curComponent]);
+	useEffect(() => {
+		// 折线图属性初始化
+		updateLineFromOptions(curComponent, form);
+	}, [curComponent]);
 	// 没有选择组件时候返回null
 	if (!curComponentId || !curComponent) return null;
 	// 根据组件配置信息渲染表单项
@@ -75,17 +79,22 @@ export function ComponentAttr() {
 	}
 	const handleEditorChange = debounce((value) => {
 		setChartOptions(value);
-		const options = JSON.parse(value);
 		try {
+			const options = JSON.parse(value);
+			console.log(options);
 			updateComponentProps(curComponentId, { options });
+			updateLineFromOptions(curComponent, form);
 		} catch (e) {}
 	}, 500);
 	// 当表单 value 变化的时候，同步到 store
 	function valueChange(changeValues: any) {
 		if (curComponent?.name === 'Line' && curComponentId) {
 			let options = JSON.parse(chartOptions);
+			options.title.text =
+				changeValues.title || curComponent.props.options.title.text;
 			options.series.map((item: any) => {
-				item.smooth = changeValues.smooth;
+				item.smooth =
+					changeValues.smooth || curComponent.props.options.series[0].smooth;
 			});
 			setChartOptions(JSON.stringify(options, null, 2));
 			updateComponentProps(curComponentId, { options });
@@ -130,4 +139,13 @@ export function ComponentAttr() {
 			))}
 		</Form>
 	);
+}
+
+function updateLineFromOptions(curComponent: any, form: any) {
+	if (curComponent?.name === 'Line') {
+		const { title } = curComponent.props.options;
+		const { text } = title;
+		const { smooth } = curComponent.props.options.series[0];
+		form.setFieldsValue({ title: text, smooth: smooth });
+	}
 }

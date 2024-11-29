@@ -306,6 +306,9 @@ export const useComponentConfigStore = create<State & Action>((set) => ({
 				width: '700px',
 				height: '400px',
 				options: {
+					title: {
+						text: '折线图',
+					},
 					xAxis: {
 						type: 'category',
 						data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
@@ -317,6 +320,7 @@ export const useComponentConfigStore = create<State & Action>((set) => ({
 						{
 							data: [150, 230, 224, 218, 135, 147, 260],
 							type: 'line',
+							smooth: false,
 						},
 					],
 				},
@@ -325,6 +329,11 @@ export const useComponentConfigStore = create<State & Action>((set) => ({
 			dev: LineDev,
 			prod: LineProd,
 			setter: [
+				{
+					name: 'title',
+					label: '标题',
+					type: 'input',
+				},
 				{
 					name: 'smooth',
 					label: '平滑',

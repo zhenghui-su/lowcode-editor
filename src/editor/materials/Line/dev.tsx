@@ -1,5 +1,9 @@
 import * as echarts from 'echarts/core';
-import { GridComponent, GridComponentOption } from 'echarts/components';
+import {
+	GridComponent,
+	GridComponentOption,
+	TitleComponent,
+} from 'echarts/components';
 import { LineChart, LineSeriesOption } from 'echarts/charts';
 import { UniversalTransition } from 'echarts/features';
 import { CanvasRenderer } from 'echarts/renderers';
@@ -19,7 +23,13 @@ function Line({
 }: CommonComponentProps & {
 	options: echarts.ComposeOption<GridComponentOption | LineSeriesOption>;
 }) {
-	echarts.use([GridComponent, LineChart, CanvasRenderer, UniversalTransition]);
+	echarts.use([
+		GridComponent,
+		TitleComponent,
+		LineChart,
+		CanvasRenderer,
+		UniversalTransition,
+	]);
 
 	const divRef = useRef<HTMLDivElement>(null);
 	const [_, drag] = useDrag({
