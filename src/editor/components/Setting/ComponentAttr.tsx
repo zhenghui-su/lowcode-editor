@@ -1,4 +1,4 @@
-import { Form, Input, Select, Switch } from 'antd';
+import { Form, Input, Select, Slider, Switch } from 'antd';
 import { useComponentsStore } from '../../stores/components';
 import {
 	ComponentSetter,
@@ -51,6 +51,8 @@ export function ComponentAttr() {
 				return <Input />;
 			case 'switch':
 				return <Switch />;
+			case 'slider':
+				return <Slider min={0} defaultValue={0} max={100} />;
 			case 'json':
 				return (
 					<div className='h-[600px] border-[1px] border-[#ccc] z-10'>
@@ -81,7 +83,6 @@ export function ComponentAttr() {
 		setChartOptions(value);
 		try {
 			const options = JSON.parse(value);
-			console.log(options);
 			updateComponentProps(curComponentId, { options });
 			updateLineFromOptions(curComponent, form);
 		} catch (e) {}
@@ -90,11 +91,14 @@ export function ComponentAttr() {
 	function valueChange(changeValues: any) {
 		if (curComponent?.name === 'Line' && curComponentId) {
 			let options = JSON.parse(chartOptions);
-			options.title.text =
-				changeValues.title || curComponent.props.options.title.text;
+			options.title.text = changeValues.title || options.title.text;
+			if (changeValues.boundaryGap != undefined) {
+				options.xAxis.boundaryGap = changeValues.boundaryGap;
+			}
 			options.series.map((item: any) => {
-				item.smooth =
-					changeValues.smooth || curComponent.props.options.series[0].smooth;
+				item.smooth = changeValues.smooth || item.smooth;
+				item.areaStyle.opacity =
+					changeValues.areaStyleOpacity / 100 || item.areaStyle.opacity;
 			});
 			setChartOptions(JSON.stringify(options, null, 2));
 			updateComponentProps(curComponentId, { options });
@@ -146,6 +150,9 @@ function updateLineFromOptions(curComponent: any, form: any) {
 		const { title } = curComponent.props.options;
 		const { text } = title;
 		const { smooth } = curComponent.props.options.series[0];
-		form.setFieldsValue({ title: text, smooth: smooth });
+		const areaStyleOpacity =
+			curComponent.props.options.series[0].areaStyle.opacity * 100;
+		const boundaryGap = curComponent.props.options.xAxis.boundaryGap;
+		form.setFieldsValue({ title: text, smooth, areaStyleOpacity, boundaryGap });
 	}
 }

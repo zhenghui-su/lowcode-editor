@@ -311,6 +311,7 @@ export const useComponentConfigStore = create<State & Action>((set) => ({
 					},
 					xAxis: {
 						type: 'category',
+						boundaryGap: true,
 						data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
 					},
 					yAxis: {
@@ -321,6 +322,9 @@ export const useComponentConfigStore = create<State & Action>((set) => ({
 							data: [150, 230, 224, 218, 135, 147, 260],
 							type: 'line',
 							smooth: false,
+							areaStyle: {
+								opacity: 0,
+							},
 						},
 					],
 				},
@@ -337,6 +341,16 @@ export const useComponentConfigStore = create<State & Action>((set) => ({
 				{
 					name: 'smooth',
 					label: '平滑',
+					type: 'switch',
+				},
+				{
+					name: 'areaStyleOpacity',
+					label: '面积图透明度',
+					type: 'slider',
+				},
+				{
+					name: 'boundaryGap',
+					label: '边界间隔',
 					type: 'switch',
 				},
 				{
