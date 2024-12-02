@@ -302,6 +302,7 @@ export const useComponentConfigStore = create<State & Action>((set) => ({
 				},
 			],
 		},
+		// TODO更多属性编辑
 		Line: {
 			name: 'Line',
 			defaultProps: {
