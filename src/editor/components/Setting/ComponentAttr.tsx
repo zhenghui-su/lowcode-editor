@@ -37,6 +37,8 @@ export function ComponentAttr() {
 	useEffect(() => {
 		// 折线图属性初始化
 		updateLineFromOptions(curComponent, form);
+		// 柱状图属性初始化
+		updateBarFromOptions(curComponent, form);
 	}, [curComponent]);
 	// 没有选择组件时候返回null
 	if (!curComponentId || !curComponent) return null;
@@ -85,21 +87,32 @@ export function ComponentAttr() {
 			const options = JSON.parse(value);
 			updateComponentProps(curComponentId, { options });
 			updateLineFromOptions(curComponent, form);
+			updateBarFromOptions(curComponent, form);
 		} catch (e) {}
 	}, 500);
 	// 当表单 value 变化的时候，同步到 store
 	function valueChange(changeValues: any) {
 		if (curComponent?.name === 'Line' && curComponentId) {
 			let options = JSON.parse(chartOptions);
+			// 标题
 			options.title.text = changeValues.title || options.title.text;
-			if (changeValues.boundaryGap != undefined) {
-				options.xAxis.boundaryGap = changeValues.boundaryGap;
-			}
+			// 边界间隔
+			options.xAxis.boundaryGap =
+				changeValues.boundaryGap ?? options.xAxis.boundaryGap;
 			options.series.map((item: any) => {
+				// 平滑曲线
 				item.smooth = changeValues.smooth || item.smooth;
+				// 面积图透明度
 				item.areaStyle.opacity =
 					changeValues.areaStyleOpacity / 100 || item.areaStyle.opacity;
 			});
+			setChartOptions(JSON.stringify(options, null, 2));
+			updateComponentProps(curComponentId, { options });
+		} else if (curComponent?.name === 'Bar' && curComponentId) {
+			let options = JSON.parse(chartOptions);
+			// 轴刻度对齐标签
+			options.xAxis.axisTick.alignWithLabel =
+				changeValues.alignWithLabel ?? options.xAxis.axisTick.alignWithLabel;
 			setChartOptions(JSON.stringify(options, null, 2));
 			updateComponentProps(curComponentId, { options });
 		} else if (curComponentId) {
@@ -154,5 +167,12 @@ function updateLineFromOptions(curComponent: any, form: any) {
 			curComponent.props.options.series[0].areaStyle.opacity * 100;
 		const boundaryGap = curComponent.props.options.xAxis.boundaryGap;
 		form.setFieldsValue({ title: text, smooth, areaStyleOpacity, boundaryGap });
+	}
+}
+
+function updateBarFromOptions(curComponent: any, form: any) {
+	if (curComponent?.name === 'Bar') {
+		const { alignWithLabel } = curComponent.props.options.xAxis.axisTick;
+		form.setFieldsValue({ alignWithLabel });
 	}
 }

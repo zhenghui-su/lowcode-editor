@@ -384,6 +384,9 @@ export const useComponentConfigStore = create<State & Action>((set) => ({
 					xAxis: {
 						type: 'category',
 						data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+						axisTick: {
+							alignWithLabel: false,
+						},
 					},
 					yAxis: {
 						type: 'value',
@@ -400,6 +403,11 @@ export const useComponentConfigStore = create<State & Action>((set) => ({
 			dev: BarDev,
 			prod: BarProd,
 			setter: [
+				{
+					name: 'alignWithLabel',
+					label: '轴刻度对齐标签',
+					type: 'switch',
+				},
 				{
 					name: 'options',
 					label: 'Echarts配置',
