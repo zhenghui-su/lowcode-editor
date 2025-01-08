@@ -13,4 +13,5 @@
   - Pie 饼图
   - Radar 雷达图
   - Scatter 散点图
+  - HeatMap 热力图
   - ..待加入..
