@@ -17,6 +17,7 @@ function Page({ id, children, styles }: CommonComponentProps) {
       "Pie",
       "Scatter",
       "Radar",
+      "HeatMap",
     ],
     id
   );
@@ -25,7 +26,7 @@ function Page({ id, children, styles }: CommonComponentProps) {
     <div
       data-component-id={id}
       ref={drop}
-      className="p-[20px] box-border overflow-y-auto"
+      className="p-[20px] box-border h-[100%] overflow-y-auto"
       style={{ ...styles, border: canDrop ? "2px solid blue" : "none" }}
     >
       {children}
