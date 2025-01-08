@@ -41,7 +41,8 @@ function Line({
 		<div
 			ref={divRef}
 			data-component-id={id}
-			style={{ width, height, display: 'inline-block', ...styles }} // 设置图表大小
+			className='w-[100%]'
+			style={{ width: '100%', height, display: 'inline-block', ...styles }} // 设置图表大小
 		></div>
 	);
 }
