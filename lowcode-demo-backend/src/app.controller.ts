@@ -17,4 +17,12 @@ export class AppController {
       { name: '小红', sex: '女', birthday: new Date('1996-08-08').getTime() },
     ];
   }
+  @Get('xAxisData')
+  xAxisData() {
+    return ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', '11'];
+  }
+  @Get('yAxisData')
+  yAxisData() {
+    return [150, 230, 224, 218, 135, 147, 700];
+  }
 }
