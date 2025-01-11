@@ -93,6 +93,9 @@ export function ComponentAttr() {
   // 当表单 value 变化的时候，同步到 store
   function valueChange(changeValues: any) {
     if (curComponent?.name === "Line" && curComponentId) {
+      if (changeValues.lineXAxisUrl || changeValues.lineYAxisUrl) {
+        updateComponentProps(curComponentId, changeValues);
+      }
       let options = JSON.parse(chartOptions);
       // 标题
       options.title.text = changeValues.title || options.title.text;

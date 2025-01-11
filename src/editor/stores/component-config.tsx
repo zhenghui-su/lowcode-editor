@@ -360,6 +360,16 @@ export const useComponentConfigStore = create<State & Action>((set) => ({
           type: "switch",
         },
         {
+          name: "lineXAxisUrl",
+          label: "X轴数据请求",
+          type: "input",
+        },
+        {
+          name: "lineYAxisUrl",
+          label: "y轴数据请求",
+          type: "input",
+        },
+        {
           name: "options",
           label: "Echarts配置",
           type: "json",
