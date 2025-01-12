@@ -4,9 +4,9 @@ import { LineChart, LineSeriesOption } from "echarts/charts";
 import { UniversalTransition } from "echarts/features";
 import { CanvasRenderer } from "echarts/renderers";
 import { CommonComponentProps } from "../../interface";
-import { useEffect, useRef, useState } from "react";
-import axios from "axios";
-import { message } from "antd";
+import { useEffect, useRef } from "react";
+import { useGetChartData } from "../../hooks/useGetChartData";
+import { optionsChange } from "../../utils/chartOptionsChange";
 
 /**
  * @description 折线图
@@ -25,49 +25,17 @@ function Line({
   echarts.use([GridComponent, LineChart, CanvasRenderer, UniversalTransition]);
 
   const divRef = useRef<HTMLDivElement>(null);
-
-  const [xAxisData, setXAxisData] = useState<any[]>([]);
-  const [YAxisData, setYAxisData] = useState<any[]>([]);
-  const [loading, setLoading] = useState(false);
-
-  const getData = async () => {
-    if (lineXAxisUrl && lineYAxisUrl) {
-      setLoading(true);
-      message.open({
-        type: "loading",
-        content: "加载数据中",
-        duration: 0,
-        key: "line",
-      });
-      const { data: xAxisData } = await axios.get(lineXAxisUrl);
-      const { data: YAxisData } = await axios.get(lineYAxisUrl);
-      setXAxisData(xAxisData);
-      setYAxisData(YAxisData);
-      message.destroy("line");
-      setLoading(false);
-    }
-  };
-  useEffect(() => {
-    getData();
-  }, []);
+  const { xAxisData, YAxisData, loading } = useGetChartData(
+    [lineXAxisUrl, lineYAxisUrl],
+    "line"
+  );
 
   useEffect(() => {
     if (divRef.current) {
       // 初始化图表
       const myChart = echarts.init(divRef.current);
-
-      // 设置外部传入的配置
-      if (
-        xAxisData &&
-        xAxisData.length > 0 &&
-        YAxisData &&
-        YAxisData.length > 0
-      ) {
-        // @ts-ignore
-        options.xAxis.data = xAxisData;
-        // @ts-ignore
-        options.series[0].data = YAxisData;
-      }
+      // 如果有请求数据, 改变options
+      options = optionsChange(options, xAxisData, YAxisData);
       myChart.setOption(options);
       // 清理函数，组件卸载时销毁图表
       return () => {
