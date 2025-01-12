@@ -1,50 +1,64 @@
-import * as echarts from 'echarts/core';
-import { GridComponent, GridComponentOption } from 'echarts/components';
-import { BarChart, BarSeriesOption } from 'echarts/charts';
-import { UniversalTransition } from 'echarts/features';
-import { CanvasRenderer } from 'echarts/renderers';
-import { CommonComponentProps } from '../../interface';
-import { useEffect, useRef } from 'react';
+import * as echarts from "echarts/core";
+import { GridComponent, GridComponentOption } from "echarts/components";
+import { BarChart, BarSeriesOption } from "echarts/charts";
+import { UniversalTransition } from "echarts/features";
+import { CanvasRenderer } from "echarts/renderers";
+import { CommonComponentProps } from "../../interface";
+import { useEffect, useRef } from "react";
+import { useGetChartData } from "../../hooks/useGetChartData";
+import { optionsChange } from "../../utils/chartOptionsChange";
 
 /**
  * @description 柱状图
  */
 function Bar({
-	id,
-	options, // 外部传入的配置
-	width,
-	height,
-	styles,
+  id,
+  options, // 外部传入的配置
+  barXAxisUrl,
+  barYAxisUrl,
+  width,
+  height,
+  styles,
 }: CommonComponentProps & {
-	options: echarts.ComposeOption<GridComponentOption | BarSeriesOption>;
+  options: echarts.ComposeOption<GridComponentOption | BarSeriesOption>;
 }) {
-	echarts.use([GridComponent, BarChart, CanvasRenderer, UniversalTransition]);
+  echarts.use([GridComponent, BarChart, CanvasRenderer, UniversalTransition]);
 
-	const divRef = useRef<HTMLDivElement>(null);
+  const divRef = useRef<HTMLDivElement>(null);
 
-	useEffect(() => {
-		if (divRef.current) {
-			// 初始化图表
-			const myChart = echarts.init(divRef.current);
+  const { xAxisData, YAxisData, loading } = useGetChartData(
+    [barXAxisUrl, barYAxisUrl],
+    "bar"
+  );
 
-			// 设置外部传入的配置
-			myChart.setOption(options);
+  useEffect(() => {
+    if (divRef.current) {
+      // 初始化图表
+      const myChart = echarts.init(divRef.current);
+      // 如果有请求数据, 改变options
+      options = optionsChange(options, xAxisData, YAxisData);
+      // 设置外部传入的配置
+      myChart.setOption(options);
 
-			// 清理函数，组件卸载时销毁图表
-			return () => {
-				myChart.dispose();
-			};
-		}
-	}, [id, options, width, height, styles]); // 当`id`或`chartOptions`变化时重新初始化图表
+      // 清理函数，组件卸载时销毁图表
+      return () => {
+        myChart.dispose();
+      };
+    }
+  }, [id, options, width, height, styles, xAxisData, YAxisData]); // 当`id`或`chartOptions`变化时重新初始化图表
 
-	return (
-		<div
-			ref={divRef}
-			data-component-id={id}
-			className='w-[100%]'
-			style={{ width: '100%', height, display: 'inline-block', ...styles }} // 设置图表大小
-		></div>
-	);
+  return (
+    <>
+      {loading ? null : (
+        <div
+          ref={divRef}
+          data-component-id={id}
+          className="w-[100%]"
+          style={{ width: "100%", height, display: "inline-block", ...styles }} // 设置图表大小
+        ></div>
+      )}
+    </>
+  );
 }
 
 export default Bar;

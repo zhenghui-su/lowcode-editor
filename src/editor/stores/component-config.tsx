@@ -421,6 +421,16 @@ export const useComponentConfigStore = create<State & Action>((set) => ({
           type: "switch",
         },
         {
+          name: "barXAxisUrl",
+          label: "X轴数据请求",
+          type: "input",
+        },
+        {
+          name: "barYAxisUrl",
+          label: "y轴数据请求",
+          type: "input",
+        },
+        {
           name: "options",
           label: "Echarts配置",
           type: "json",

@@ -112,6 +112,9 @@ export function ComponentAttr() {
       setChartOptions(JSON.stringify(options, null, 2));
       updateComponentProps(curComponentId, { options });
     } else if (curComponent?.name === "Bar" && curComponentId) {
+      if (changeValues.barXAxisUrl || changeValues.barYAxisUrl) {
+        updateComponentProps(curComponentId, changeValues);
+      }
       let options = JSON.parse(chartOptions);
       // 轴刻度对齐标签
       options.xAxis.axisTick.alignWithLabel =
