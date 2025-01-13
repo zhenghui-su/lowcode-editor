@@ -25,4 +25,29 @@ export class AppController {
   yAxisData() {
     return [150, 230, 224, 218, 135, 147, 700];
   }
+  @Get('pieAxisData')
+  pieAxisData() {
+    return [
+      {
+        value: 1048,
+        name: 'Search Engine',
+      },
+      {
+        value: 735,
+        name: 'Direct',
+      },
+      {
+        value: 580,
+        name: 'Email',
+      },
+      {
+        value: 484,
+        name: 'Union Ads',
+      },
+      {
+        value: 800,
+        name: 'Hello',
+      },
+    ];
+  }
 }
