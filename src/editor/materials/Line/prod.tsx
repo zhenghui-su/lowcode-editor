@@ -35,7 +35,7 @@ function Line({
       // 初始化图表
       const myChart = echarts.init(divRef.current);
       // 如果有请求数据, 改变options
-      options = optionsChange(options, xAxisData, YAxisData);
+      options = optionsChange(options, [xAxisData, YAxisData]);
       myChart.setOption(options);
       // 清理函数，组件卸载时销毁图表
       return () => {

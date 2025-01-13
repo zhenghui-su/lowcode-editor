@@ -36,7 +36,7 @@ function Bar({
       // 初始化图表
       const myChart = echarts.init(divRef.current);
       // 如果有请求数据, 改变options
-      options = optionsChange(options, xAxisData, YAxisData);
+      options = optionsChange(options, [xAxisData, YAxisData]);
       // 设置外部传入的配置
       myChart.setOption(options);
 
