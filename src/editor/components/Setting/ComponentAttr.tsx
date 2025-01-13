@@ -121,6 +121,10 @@ export function ComponentAttr() {
         changeValues.alignWithLabel ?? options.xAxis.axisTick.alignWithLabel;
       setChartOptions(JSON.stringify(options, null, 2));
       updateComponentProps(curComponentId, { options });
+    } else if (curComponent?.name === "Pie" && curComponentId) {
+      if (changeValues.pieDataUrl) {
+        updateComponentProps(curComponentId, changeValues);
+      }
     } else if (curComponentId) {
       updateComponentProps(curComponentId, changeValues);
     }

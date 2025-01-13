@@ -494,6 +494,11 @@ export const useComponentConfigStore = create<State & Action>((set) => ({
       prod: PieProd,
       setter: [
         {
+          name: "pieDataUrl",
+          label: "饼图数据请求",
+          type: "input",
+        },
+        {
           name: "options",
           label: "Echarts配置",
           type: "json",
