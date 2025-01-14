@@ -141,6 +141,10 @@ export function ComponentAttr() {
       options.title.left = changeValues.left || options.title.left;
       setChartOptions(JSON.stringify(options, null, 2));
       updateComponentProps(curComponentId, { options });
+    } else if (curComponent?.name === "Scatter" && curComponentId) {
+      if (changeValues.scatterDataUrl) {
+        updateComponentProps(curComponentId, changeValues);
+      }
     } else if (curComponentId) {
       updateComponentProps(curComponentId, changeValues);
     }

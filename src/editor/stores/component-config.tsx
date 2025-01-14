@@ -614,6 +614,11 @@ export const useComponentConfigStore = create<State & Action>((set) => ({
       prod: ScatterProd,
       setter: [
         {
+          name: "scatterDataUrl",
+          label: "散点图数据请求",
+          type: "input",
+        },
+        {
           name: "options",
           label: "Echarts配置",
           type: "json",
