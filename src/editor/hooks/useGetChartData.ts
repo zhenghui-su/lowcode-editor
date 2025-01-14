@@ -21,10 +21,15 @@ export function useGetChartData(urlArray: string[], key: string) {
         duration: 0,
         key: key,
       });
-      const { data } = await axios.get(urlArray[0]);
-      setAxisData(data);
-      message.destroy(key);
-      setLoading(false);
+      try {
+        const { data } = await axios.get(urlArray[0]);
+        setAxisData(data);
+      } catch (error) {
+        message.error("数据获取失败");
+      } finally {
+        message.destroy(key);
+        setLoading(false);
+      }
     }
     if (urlArray.length === 2 && urlArray[0] && urlArray[1]) {
       setLoading(true);
@@ -34,12 +39,17 @@ export function useGetChartData(urlArray: string[], key: string) {
         duration: 0,
         key: key,
       });
-      const { data: xAxisData } = await axios.get(urlArray[0]);
-      const { data: YAxisData } = await axios.get(urlArray[1]);
-      setXAxisData(xAxisData);
-      setYAxisData(YAxisData);
-      message.destroy(key);
-      setLoading(false);
+      try {
+        const { data: xAxisData } = await axios.get(urlArray[0]);
+        const { data: YAxisData } = await axios.get(urlArray[1]);
+        setXAxisData(xAxisData);
+        setYAxisData(YAxisData);
+      } catch (error) {
+        message.error("数据获取失败");
+      } finally {
+        message.destroy(key);
+        setLoading(false);
+      }
     }
   };
   useEffect(() => {
