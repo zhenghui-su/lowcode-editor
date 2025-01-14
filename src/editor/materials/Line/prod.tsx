@@ -42,7 +42,7 @@ function Line({
         myChart.dispose();
       };
     }
-  }, [id, options, width, height, styles, xAxisData, YAxisData]); // 当`id`或`chartOptions`变化时重新初始化图表
+  }, [id, options, width, height, styles, xAxisData, YAxisData, loading]); // 当`id`或`chartOptions`变化时重新初始化图表
 
   return (
     <>
