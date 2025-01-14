@@ -39,6 +39,8 @@ export function ComponentAttr() {
     updateLineFromOptions(curComponent, form);
     // 柱状图属性初始化
     updateBarFromOptions(curComponent, form);
+    // 饼图属性初始化
+    updatePieFromOptions(curComponent, form);
   }, [curComponent]);
   // 没有选择组件时候返回null
   if (!curComponentId || !curComponent) return null;
@@ -88,6 +90,7 @@ export function ComponentAttr() {
       updateComponentProps(curComponentId, { options });
       updateLineFromOptions(curComponent, form);
       updateBarFromOptions(curComponent, form);
+      updatePieFromOptions(curComponent, form);
     } catch (e) {}
   }, 500);
   // 当表单 value 变化的时候，同步到 store
@@ -97,8 +100,12 @@ export function ComponentAttr() {
         updateComponentProps(curComponentId, changeValues);
       }
       let options = JSON.parse(chartOptions);
-      // 标题
-      options.title.text = changeValues.title || options.title.text;
+      // 正标题
+      options.title.text = changeValues.text || options.title.text;
+      // 副标题
+      options.title.subtext = changeValues.subtext || options.title.subtext;
+      // title 位置
+      options.title.left = changeValues.left || options.title.left;
       // 边界间隔
       options.xAxis.boundaryGap =
         changeValues.boundaryGap ?? options.xAxis.boundaryGap;
@@ -125,6 +132,15 @@ export function ComponentAttr() {
       if (changeValues.pieDataUrl) {
         updateComponentProps(curComponentId, changeValues);
       }
+      let options = JSON.parse(chartOptions);
+      // 正标题
+      options.title.text = changeValues.text || options.title.text;
+      // 副标题
+      options.title.subtext = changeValues.subtext || options.title.subtext;
+      // title 位置
+      options.title.left = changeValues.left || options.title.left;
+      setChartOptions(JSON.stringify(options, null, 2));
+      updateComponentProps(curComponentId, { options });
     } else if (curComponentId) {
       updateComponentProps(curComponentId, changeValues);
     }
@@ -170,13 +186,19 @@ export function ComponentAttr() {
 
 function updateLineFromOptions(curComponent: any, form: any) {
   if (curComponent?.name === "Line") {
-    const { title } = curComponent.props.options;
-    const { text } = title;
+    const { text, subtext, left } = curComponent.props.options.title;
     const { smooth } = curComponent.props.options.series[0];
     const areaStyleOpacity =
       curComponent.props.options.series[0].areaStyle.opacity * 100;
     const boundaryGap = curComponent.props.options.xAxis.boundaryGap;
-    form.setFieldsValue({ title: text, smooth, areaStyleOpacity, boundaryGap });
+    form.setFieldsValue({
+      title: text,
+      subtext,
+      left,
+      smooth,
+      areaStyleOpacity,
+      boundaryGap,
+    });
   }
 }
 
@@ -184,5 +206,11 @@ function updateBarFromOptions(curComponent: any, form: any) {
   if (curComponent?.name === "Bar") {
     const { alignWithLabel } = curComponent.props.options.xAxis.axisTick;
     form.setFieldsValue({ alignWithLabel });
+  }
+}
+function updatePieFromOptions(curComponent: any, form: any) {
+  if (curComponent?.name === "Pie") {
+    const { text, subtext, left } = curComponent.props.options.title;
+    form.setFieldsValue({ title: text, subtext, left });
   }
 }

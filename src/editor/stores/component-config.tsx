@@ -340,9 +340,33 @@ export const useComponentConfigStore = create<State & Action>((set) => ({
       prod: LineProd,
       setter: [
         {
-          name: "title",
-          label: "标题",
+          name: "text",
+          label: "正标题",
           type: "input",
+        },
+        {
+          name: "subtext",
+          label: "副标题",
+          type: "input",
+        },
+        {
+          name: "left",
+          label: "标题位置",
+          type: "select",
+          options: [
+            {
+              label: "居左",
+              value: "left",
+            },
+            {
+              label: "居中",
+              value: "center",
+            },
+            {
+              label: "居右",
+              value: "right",
+            },
+          ],
         },
         {
           name: "smooth",
@@ -493,6 +517,35 @@ export const useComponentConfigStore = create<State & Action>((set) => ({
       dev: PieDev,
       prod: PieProd,
       setter: [
+        {
+          name: "text",
+          label: "正标题",
+          type: "input",
+        },
+        {
+          name: "subtext",
+          label: "副标题",
+          type: "input",
+        },
+        {
+          name: "left",
+          label: "标题位置",
+          type: "select",
+          options: [
+            {
+              label: "居左",
+              value: "left",
+            },
+            {
+              label: "居中",
+              value: "center",
+            },
+            {
+              label: "居右",
+              value: "right",
+            },
+          ],
+        },
         {
           name: "pieDataUrl",
           label: "饼图数据请求",
