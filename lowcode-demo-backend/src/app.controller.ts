@@ -77,4 +77,46 @@ export class AppController {
       [5.02, 5.68],
     ];
   }
+  @Get('radarIndicatorData')
+  radarIndicatorData() {
+    return [
+      {
+        name: '111',
+        max: 6500,
+      },
+      {
+        name: '222',
+        max: 16000,
+      },
+      {
+        name: '222 Technology',
+        max: 30000,
+      },
+      {
+        name: 'Customer Support',
+        max: 38000,
+      },
+      {
+        name: 'Development',
+        max: 52000,
+      },
+      {
+        name: 'Marketing',
+        max: 25000,
+      },
+    ];
+  }
+  @Get('radarData')
+  radarData() {
+    return [
+      {
+        value: [4200, 9000, 20000, 35000, 50000, 18000],
+        name: 'Allocated Budget',
+      },
+      {
+        value: [5000, 14000, 28000, 26000, 42000, 21000],
+        name: 'Actual Spending',
+      },
+    ];
+  }
 }
