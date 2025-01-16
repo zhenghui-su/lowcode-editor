@@ -1,23 +1,22 @@
+import { cloneDeep } from "lodash-es";
+
 export function optionsChange(options: any, axisData: any[], key?: string) {
+  // 不改变开发dev的options配置，要查看效果，通过预览查看
+  const newOptions = cloneDeep(options);
   if (key === "radar") {
     const indicator = axisData[0];
     const seriesData = axisData[1];
-    if (
-      indicator &&
-      seriesData &&
-      indicator.length > 0 &&
-      seriesData.length > 0
-    ) {
-      // @ts-ignore
-      options.radar.indicator = indicator;
-      // @ts-ignore
-      options.series[0].data = seriesData;
+    if (indicator && indicator.length > 0) {
+      newOptions.radar.indicator = indicator;
+    }
+    if (seriesData && seriesData.length > 0) {
+      newOptions.series[0].data = seriesData;
     }
   } else if (axisData.length === 1) {
     const AxisData = axisData[0];
     if (AxisData && AxisData.length > 0) {
       // @ts-ignore
-      options.series[0].data = AxisData;
+      newOptions.series[0].data = AxisData;
     }
   } else if (axisData.length === 2) {
     const xAxisData = axisData[0];
@@ -29,10 +28,10 @@ export function optionsChange(options: any, axisData: any[], key?: string) {
       YAxisData.length > 0
     ) {
       // @ts-ignore
-      options.xAxis.data = xAxisData;
+      newOptions.xAxis.data = xAxisData;
       // @ts-ignore
-      options.series[0].data = YAxisData;
+      newOptions.series[0].data = YAxisData;
     }
   }
-  return options;
+  return newOptions;
 }
