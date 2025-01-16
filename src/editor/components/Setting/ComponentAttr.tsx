@@ -145,6 +145,10 @@ export function ComponentAttr() {
       if (changeValues.scatterDataUrl) {
         updateComponentProps(curComponentId, changeValues);
       }
+    } else if (curComponent?.name === "Radar" && curComponentId) {
+      if (changeValues.radarIndicatorUrl || changeValues.radarDataUrl) {
+        updateComponentProps(curComponentId, changeValues);
+      }
     } else if (curComponentId) {
       updateComponentProps(curComponentId, changeValues);
     }

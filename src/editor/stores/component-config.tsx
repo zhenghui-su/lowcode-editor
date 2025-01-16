@@ -682,6 +682,16 @@ export const useComponentConfigStore = create<State & Action>((set) => ({
       prod: RadarProd,
       setter: [
         {
+          name: "radarIndicatorUrl",
+          label: "指示器请求",
+          type: "input",
+        },
+        {
+          name: "radarDataUrl",
+          label: "数据请求",
+          type: "input",
+        },
+        {
           name: "options",
           label: "Echarts配置",
           type: "json",
