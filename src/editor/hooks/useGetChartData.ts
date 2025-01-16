@@ -15,7 +15,7 @@ export function useGetChartData(urlArray: string[], key: string) {
   const [radarSeriesData, setRadarSeriesData] = useState<any>([]);
   const [loading, setLoading] = useState(false);
   const getData = async () => {
-    if (key === "radar") {
+    if (key === "radar" && urlArray.length === 2) {
       setLoading(true);
       message.open({
         type: "loading",
@@ -24,10 +24,14 @@ export function useGetChartData(urlArray: string[], key: string) {
         key: key,
       });
       try {
-        const { data: indicator } = await axios.get(urlArray[0]);
-        const { data: seriesData } = await axios.get(urlArray[1]);
-        setRadarIndicator(indicator);
-        setRadarSeriesData(seriesData);
+        if (urlArray[0]) {
+          const { data: indicator } = await axios.get(urlArray[0]);
+          setRadarIndicator(indicator);
+        }
+        if (urlArray[1]) {
+          const { data: seriesData } = await axios.get(urlArray[1]);
+          setRadarSeriesData(seriesData);
+        }
       } catch {
         message.error("数据获取失败");
       } finally {
