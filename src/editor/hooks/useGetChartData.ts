@@ -11,9 +11,30 @@ export function useGetChartData(urlArray: string[], key: string) {
   const [xAxisData, setXAxisData] = useState<any[]>([]);
   const [YAxisData, setYAxisData] = useState<any[]>([]);
   const [axisData, setAxisData] = useState<any[]>([]);
+  const [radarIndicator, setRadarIndicator] = useState<any>([]);
+  const [radarSeriesData, setRadarSeriesData] = useState<any>([]);
   const [loading, setLoading] = useState(false);
   const getData = async () => {
-    if (urlArray.length === 1 && urlArray[0]) {
+    if (key === "radar") {
+      setLoading(true);
+      message.open({
+        type: "loading",
+        content: "加载数据中",
+        duration: 0,
+        key: key,
+      });
+      try {
+        const { data: indicator } = await axios.get(urlArray[0]);
+        const { data: seriesData } = await axios.get(urlArray[1]);
+        setRadarIndicator(indicator);
+        setRadarSeriesData(seriesData);
+      } catch {
+        message.error("数据获取失败");
+      } finally {
+        message.destroy(key);
+        setLoading(false);
+      }
+    } else if (urlArray.length === 1 && urlArray[0]) {
       setLoading(true);
       message.open({
         type: "loading",
@@ -30,8 +51,7 @@ export function useGetChartData(urlArray: string[], key: string) {
         message.destroy(key);
         setLoading(false);
       }
-    }
-    if (urlArray.length === 2 && urlArray[0] && urlArray[1]) {
+    } else if (urlArray.length === 2 && urlArray[0] && urlArray[1]) {
       setLoading(true);
       message.open({
         type: "loading",
@@ -59,6 +79,8 @@ export function useGetChartData(urlArray: string[], key: string) {
     axisData,
     xAxisData,
     YAxisData,
+    radarIndicator,
+    radarSeriesData,
     loading,
   };
 }
