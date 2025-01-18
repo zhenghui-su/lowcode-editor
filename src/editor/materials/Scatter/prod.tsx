@@ -1,5 +1,9 @@
 import * as echarts from "echarts/core";
-import { GridComponentOption, GridComponent } from "echarts/components";
+import {
+  GridComponentOption,
+  GridComponent,
+  TitleComponent,
+} from "echarts/components";
 import { ScatterChart, ScatterSeriesOption } from "echarts/charts";
 import { UniversalTransition } from "echarts/features";
 import { CanvasRenderer } from "echarts/renderers";
@@ -23,6 +27,7 @@ function Scatter({
 }) {
   echarts.use([
     GridComponent,
+    TitleComponent,
     ScatterChart,
     CanvasRenderer,
     UniversalTransition,
