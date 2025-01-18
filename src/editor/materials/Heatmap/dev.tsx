@@ -6,6 +6,7 @@ import {
   GridComponentOption,
   VisualMapComponent,
   VisualMapComponentOption,
+  TitleComponent,
 } from "echarts/components";
 import { HeatmapChart, HeatmapSeriesOption } from "echarts/charts";
 import { CanvasRenderer } from "echarts/renderers";
@@ -36,6 +37,7 @@ function HeatMap({
   echarts.use([
     TooltipComponent,
     GridComponent,
+    TitleComponent,
     VisualMapComponent,
     HeatmapChart,
     CanvasRenderer,
