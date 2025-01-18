@@ -41,6 +41,12 @@ export function ComponentAttr() {
     updateBarFromOptions(curComponent, form);
     // 饼图属性初始化
     updatePieFromOptions(curComponent, form);
+    // 散点图属性初始化
+    updateScatterFromOptions(curComponent, form);
+    // 雷达图属性初始化
+    updateRadarFromOptions(curComponent, form);
+    // 热力图属性初始化
+    updateHeatMapFromOptions(curComponent, form);
   }, [curComponent]);
   // 没有选择组件时候返回null
   if (!curComponentId || !curComponent) return null;
@@ -91,6 +97,9 @@ export function ComponentAttr() {
       updateLineFromOptions(curComponent, form);
       updateBarFromOptions(curComponent, form);
       updatePieFromOptions(curComponent, form);
+      updateScatterFromOptions(curComponent, form);
+      updateRadarFromOptions(curComponent, form);
+      updateHeatMapFromOptions(curComponent, form);
     } catch (e) {}
   }, 500);
   // 当表单 value 变化的时候，同步到 store
@@ -123,6 +132,12 @@ export function ComponentAttr() {
         updateComponentProps(curComponentId, changeValues);
       }
       let options = JSON.parse(chartOptions);
+      // 正标题
+      options.title.text = changeValues.text || options.title.text;
+      // 副标题
+      options.title.subtext = changeValues.subtext || options.title.subtext;
+      // title 位置
+      options.title.left = changeValues.left || options.title.left;
       // 轴刻度对齐标签
       options.xAxis.axisTick.alignWithLabel =
         changeValues.alignWithLabel ?? options.xAxis.axisTick.alignWithLabel;
@@ -145,10 +160,38 @@ export function ComponentAttr() {
       if (changeValues.scatterDataUrl) {
         updateComponentProps(curComponentId, changeValues);
       }
+      let options = JSON.parse(chartOptions);
+      // 正标题
+      options.title.text = changeValues.text || options.title.text;
+      // 副标题
+      options.title.subtext = changeValues.subtext || options.title.subtext;
+      // title 位置
+      options.title.left = changeValues.left || options.title.left;
+      setChartOptions(JSON.stringify(options, null, 2));
+      updateComponentProps(curComponentId, { options });
     } else if (curComponent?.name === "Radar" && curComponentId) {
       if (changeValues.radarIndicatorUrl || changeValues.radarDataUrl) {
         updateComponentProps(curComponentId, changeValues);
       }
+      let options = JSON.parse(chartOptions);
+      // 正标题
+      options.title.text = changeValues.text || options.title.text;
+      // 副标题
+      options.title.subtext = changeValues.subtext || options.title.subtext;
+      // title 位置
+      options.title.left = changeValues.left || options.title.left;
+      setChartOptions(JSON.stringify(options, null, 2));
+      updateComponentProps(curComponentId, { options });
+    } else if (curComponent?.name === "HeatMap" && curComponentId) {
+      let options = JSON.parse(chartOptions);
+      // 正标题
+      options.title.text = changeValues.text || options.title.text;
+      // 副标题
+      options.title.subtext = changeValues.subtext || options.title.subtext;
+      // title 位置
+      options.title.left = changeValues.left || options.title.left;
+      setChartOptions(JSON.stringify(options, null, 2));
+      updateComponentProps(curComponentId, { options });
     } else if (curComponentId) {
       updateComponentProps(curComponentId, changeValues);
     }
@@ -200,7 +243,7 @@ function updateLineFromOptions(curComponent: any, form: any) {
       curComponent.props.options.series[0].areaStyle.opacity * 100;
     const boundaryGap = curComponent.props.options.xAxis.boundaryGap;
     form.setFieldsValue({
-      title: text,
+      text,
       subtext,
       left,
       smooth,
@@ -212,13 +255,32 @@ function updateLineFromOptions(curComponent: any, form: any) {
 
 function updateBarFromOptions(curComponent: any, form: any) {
   if (curComponent?.name === "Bar") {
+    const { text, subtext, left } = curComponent.props.options.title;
     const { alignWithLabel } = curComponent.props.options.xAxis.axisTick;
-    form.setFieldsValue({ alignWithLabel });
+    form.setFieldsValue({ text, subtext, left, alignWithLabel });
   }
 }
 function updatePieFromOptions(curComponent: any, form: any) {
   if (curComponent?.name === "Pie") {
     const { text, subtext, left } = curComponent.props.options.title;
-    form.setFieldsValue({ title: text, subtext, left });
+    form.setFieldsValue({ text, subtext, left });
+  }
+}
+function updateScatterFromOptions(curComponent: any, form: any) {
+  if (curComponent?.name === "Scatter") {
+    const { text, subtext, left } = curComponent.props.options.title;
+    form.setFieldsValue({ text, subtext, left });
+  }
+}
+function updateRadarFromOptions(curComponent: any, form: any) {
+  if (curComponent?.name === "Radar") {
+    const { text, subtext, left } = curComponent.props.options.title;
+    form.setFieldsValue({ text, subtext, left });
+  }
+}
+function updateHeatMapFromOptions(curComponent: any, form: any) {
+  if (curComponent?.name === "HeatMap") {
+    const { text, subtext, left } = curComponent.props.options.title;
+    form.setFieldsValue({ text, subtext, left });
   }
 }

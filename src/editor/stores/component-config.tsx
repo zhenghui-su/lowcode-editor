@@ -417,6 +417,9 @@ export const useComponentConfigStore = create<State & Action>((set) => ({
       defaultProps: {
         height: "400px",
         options: {
+          title: {
+            text: "柱状图",
+          },
           xAxis: {
             type: "category",
             data: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
@@ -439,6 +442,35 @@ export const useComponentConfigStore = create<State & Action>((set) => ({
       dev: BarDev,
       prod: BarProd,
       setter: [
+        {
+          name: "text",
+          label: "正标题",
+          type: "input",
+        },
+        {
+          name: "subtext",
+          label: "副标题",
+          type: "input",
+        },
+        {
+          name: "left",
+          label: "标题位置",
+          type: "select",
+          options: [
+            {
+              label: "居左",
+              value: "left",
+            },
+            {
+              label: "居中",
+              value: "center",
+            },
+            {
+              label: "居右",
+              value: "right",
+            },
+          ],
+        },
         {
           name: "alignWithLabel",
           label: "轴刻度对齐标签",
@@ -479,8 +511,7 @@ export const useComponentConfigStore = create<State & Action>((set) => ({
         height: "400px",
         options: {
           title: {
-            text: "Referer of a Website",
-            subtext: "Fake Data",
+            text: "饼图",
             left: "center",
           },
           tooltip: {
@@ -576,6 +607,9 @@ export const useComponentConfigStore = create<State & Action>((set) => ({
       defaultProps: {
         height: "400px",
         options: {
+          title: {
+            text: "散点图",
+          },
           xAxis: {},
           yAxis: {},
           series: [
@@ -614,6 +648,35 @@ export const useComponentConfigStore = create<State & Action>((set) => ({
       prod: ScatterProd,
       setter: [
         {
+          name: "text",
+          label: "正标题",
+          type: "input",
+        },
+        {
+          name: "subtext",
+          label: "副标题",
+          type: "input",
+        },
+        {
+          name: "left",
+          label: "标题位置",
+          type: "select",
+          options: [
+            {
+              label: "居左",
+              value: "left",
+            },
+            {
+              label: "居中",
+              value: "center",
+            },
+            {
+              label: "居右",
+              value: "right",
+            },
+          ],
+        },
+        {
           name: "scatterDataUrl",
           label: "散点图数据请求",
           type: "input",
@@ -644,7 +707,7 @@ export const useComponentConfigStore = create<State & Action>((set) => ({
         height: "400px",
         options: {
           title: {
-            text: "Basic Radar Chart",
+            text: "雷达图",
           },
           legend: {
             data: ["Allocated Budget", "Actual Spending"],
@@ -682,6 +745,35 @@ export const useComponentConfigStore = create<State & Action>((set) => ({
       prod: RadarProd,
       setter: [
         {
+          name: "text",
+          label: "正标题",
+          type: "input",
+        },
+        {
+          name: "subtext",
+          label: "副标题",
+          type: "input",
+        },
+        {
+          name: "left",
+          label: "标题位置",
+          type: "select",
+          options: [
+            {
+              label: "居左",
+              value: "left",
+            },
+            {
+              label: "居中",
+              value: "center",
+            },
+            {
+              label: "居右",
+              value: "right",
+            },
+          ],
+        },
+        {
           name: "radarIndicatorUrl",
           label: "指示器请求",
           type: "input",
@@ -716,6 +808,9 @@ export const useComponentConfigStore = create<State & Action>((set) => ({
       defaultProps: {
         height: "400px",
         options: {
+          title: {
+            text: "热力图",
+          },
           tooltip: {
             position: "top",
           },
@@ -970,6 +1065,35 @@ export const useComponentConfigStore = create<State & Action>((set) => ({
       dev: HeatMapDev,
       prod: HeatMapProd,
       setter: [
+        {
+          name: "text",
+          label: "正标题",
+          type: "input",
+        },
+        {
+          name: "subtext",
+          label: "副标题",
+          type: "input",
+        },
+        {
+          name: "left",
+          label: "标题位置",
+          type: "select",
+          options: [
+            {
+              label: "居左",
+              value: "left",
+            },
+            {
+              label: "居中",
+              value: "center",
+            },
+            {
+              label: "居右",
+              value: "right",
+            },
+          ],
+        },
         {
           name: "options",
           label: "Echarts配置",
