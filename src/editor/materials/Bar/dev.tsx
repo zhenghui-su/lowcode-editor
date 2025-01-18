@@ -1,5 +1,9 @@
 import * as echarts from "echarts/core";
-import { GridComponent, GridComponentOption } from "echarts/components";
+import {
+  GridComponent,
+  GridComponentOption,
+  TitleComponent,
+} from "echarts/components";
 import { BarChart, BarSeriesOption } from "echarts/charts";
 import { UniversalTransition } from "echarts/features";
 import { CanvasRenderer } from "echarts/renderers";
@@ -20,7 +24,13 @@ function Bar({
 }: CommonComponentProps & {
   options: echarts.ComposeOption<GridComponentOption | BarSeriesOption>;
 }) {
-  echarts.use([GridComponent, BarChart, CanvasRenderer, UniversalTransition]);
+  echarts.use([
+    GridComponent,
+    TitleComponent,
+    BarChart,
+    CanvasRenderer,
+    UniversalTransition,
+  ]);
 
   const divRef = useRef<HTMLDivElement>(null);
   const [_, drag] = useDrag({
