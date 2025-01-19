@@ -47,6 +47,8 @@ export function ComponentAttr() {
     updateRadarFromOptions(curComponent, form);
     // 热力图属性初始化
     updateHeatMapFromOptions(curComponent, form);
+    // 旭日图属性初始化
+    updateSunburstFromOptions(curComponent, form);
   }, [curComponent]);
   // 没有选择组件时候返回null
   if (!curComponentId || !curComponent) return null;
@@ -100,6 +102,7 @@ export function ComponentAttr() {
       updateScatterFromOptions(curComponent, form);
       updateRadarFromOptions(curComponent, form);
       updateHeatMapFromOptions(curComponent, form);
+      updateSunburstFromOptions(curComponent, form);
     } catch (e) {}
   }, 500);
   // 当表单 value 变化的时候，同步到 store
@@ -192,6 +195,16 @@ export function ComponentAttr() {
       options.title.left = changeValues.left || options.title.left;
       setChartOptions(JSON.stringify(options, null, 2));
       updateComponentProps(curComponentId, { options });
+    } else if (curComponent?.name === "Sunburst" && curComponentId) {
+      let options = JSON.parse(chartOptions);
+      // 正标题
+      options.title.text = changeValues.text || options.title.text;
+      // 副标题
+      options.title.subtext = changeValues.subtext || options.title.subtext;
+      // title 位置
+      options.title.left = changeValues.left || options.title.left;
+      setChartOptions(JSON.stringify(options, null, 2));
+      updateComponentProps(curComponentId, { options });
     } else if (curComponentId) {
       updateComponentProps(curComponentId, changeValues);
     }
@@ -252,7 +265,6 @@ function updateLineFromOptions(curComponent: any, form: any) {
     });
   }
 }
-
 function updateBarFromOptions(curComponent: any, form: any) {
   if (curComponent?.name === "Bar") {
     const { text, subtext, left } = curComponent.props.options.title;
@@ -280,6 +292,12 @@ function updateRadarFromOptions(curComponent: any, form: any) {
 }
 function updateHeatMapFromOptions(curComponent: any, form: any) {
   if (curComponent?.name === "HeatMap") {
+    const { text, subtext, left } = curComponent.props.options.title;
+    form.setFieldsValue({ text, subtext, left });
+  }
+}
+function updateSunburstFromOptions(curComponent: any, form: any) {
+  if (curComponent?.name === "Sunburst") {
     const { text, subtext, left } = curComponent.props.options.title;
     form.setFieldsValue({ text, subtext, left });
   }

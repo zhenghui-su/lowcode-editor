@@ -27,6 +27,8 @@ import RadarDev from "../materials/Radar/dev";
 import RadarProd from "../materials/Radar/prod";
 import HeatMapDev from "../materials/Heatmap/dev";
 import HeatMapProd from "../materials/Heatmap/prod";
+import SunburstDev from "../materials/Sunburst/dev";
+import SunburstProd from "../materials/Sunburst/prod";
 
 /**
  * 组件属性表单配置
@@ -1064,6 +1066,143 @@ export const useComponentConfigStore = create<State & Action>((set) => ({
       },
       dev: HeatMapDev,
       prod: HeatMapProd,
+      setter: [
+        {
+          name: "text",
+          label: "正标题",
+          type: "input",
+        },
+        {
+          name: "subtext",
+          label: "副标题",
+          type: "input",
+        },
+        {
+          name: "left",
+          label: "标题位置",
+          type: "select",
+          options: [
+            {
+              label: "居左",
+              value: "left",
+            },
+            {
+              label: "居中",
+              value: "center",
+            },
+            {
+              label: "居右",
+              value: "right",
+            },
+          ],
+        },
+        {
+          name: "options",
+          label: "Echarts配置",
+          type: "json",
+        },
+      ],
+      stylesSetter: [
+        {
+          name: "width",
+          label: "宽度",
+          type: "inputNumber",
+        },
+        {
+          name: "height",
+          label: "高度",
+          type: "inputNumber",
+        },
+      ],
+    },
+    Sunburst: {
+      name: "Sunburst",
+      desc: "旭日图",
+      defaultProps: {
+        height: "400px",
+        options: {
+          title: {
+            text: "旭日图",
+            subtext: "示例",
+            left: "left",
+          },
+          series: {
+            type: "sunburst",
+            emphasis: {
+              focus: "ancestor",
+            },
+            data: [
+              {
+                name: "Grandpa",
+                children: [
+                  {
+                    name: "Uncle Leo",
+                    value: 15,
+                    children: [
+                      {
+                        name: "Cousin Jack",
+                        value: 2,
+                      },
+                      {
+                        name: "Cousin Mary",
+                        value: 5,
+                        children: [
+                          {
+                            name: "Jackson",
+                            value: 2,
+                          },
+                        ],
+                      },
+                      {
+                        name: "Cousin Ben",
+                        value: 4,
+                      },
+                    ],
+                  },
+                  {
+                    name: "Father",
+                    value: 10,
+                    children: [
+                      {
+                        name: "Me",
+                        value: 5,
+                      },
+                      {
+                        name: "Brother Peter",
+                        value: 1,
+                      },
+                    ],
+                  },
+                ],
+              },
+              {
+                name: "Nancy",
+                children: [
+                  {
+                    name: "Uncle Nike",
+                    children: [
+                      {
+                        name: "Cousin Betty",
+                        value: 1,
+                      },
+                      {
+                        name: "Cousin Jenny",
+                        value: 2,
+                      },
+                    ],
+                  },
+                ],
+              },
+            ],
+            radius: [0, "90%"],
+            label: {
+              rotate: "radial",
+            },
+          },
+        },
+      },
+      dev: SunburstDev,
+      prod: SunburstProd,
       setter: [
         {
           name: "text",
