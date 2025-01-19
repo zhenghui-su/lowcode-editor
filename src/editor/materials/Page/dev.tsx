@@ -19,6 +19,7 @@ function Page({ id, children, styles }: CommonComponentProps) {
       "Radar",
       "HeatMap",
       "Sunburst",
+      "Parallel",
     ],
     id
   );

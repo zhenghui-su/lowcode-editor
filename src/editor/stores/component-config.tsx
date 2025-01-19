@@ -29,6 +29,8 @@ import HeatMapDev from "../materials/Heatmap/dev";
 import HeatMapProd from "../materials/Heatmap/prod";
 import SunburstDev from "../materials/Sunburst/dev";
 import SunburstProd from "../materials/Sunburst/prod";
+import ParallelDev from "../materials/Parallel/dev";
+import ParallelProd from "../materials/Parallel/prod";
 
 /**
  * 组件属性表单配置
@@ -1203,6 +1205,92 @@ export const useComponentConfigStore = create<State & Action>((set) => ({
       },
       dev: SunburstDev,
       prod: SunburstProd,
+      setter: [
+        {
+          name: "text",
+          label: "正标题",
+          type: "input",
+        },
+        {
+          name: "subtext",
+          label: "副标题",
+          type: "input",
+        },
+        {
+          name: "left",
+          label: "标题位置",
+          type: "select",
+          options: [
+            {
+              label: "居左",
+              value: "left",
+            },
+            {
+              label: "居中",
+              value: "center",
+            },
+            {
+              label: "居右",
+              value: "right",
+            },
+          ],
+        },
+        {
+          name: "options",
+          label: "Echarts配置",
+          type: "json",
+        },
+      ],
+      stylesSetter: [
+        {
+          name: "width",
+          label: "宽度",
+          type: "inputNumber",
+        },
+        {
+          name: "height",
+          label: "高度",
+          type: "inputNumber",
+        },
+      ],
+    },
+    Parallel: {
+      name: "Parallel",
+      desc: "平行坐标系",
+      defaultProps: {
+        height: "400px",
+        options: {
+          title: {
+            text: "平行坐标系",
+            subtext: "",
+            left: "left",
+          },
+          parallelAxis: [
+            { dim: 0, name: "Price" },
+            { dim: 1, name: "Net Weight" },
+            { dim: 2, name: "Amount" },
+            {
+              dim: 3,
+              name: "Score",
+              type: "category",
+              data: ["Excellent", "Good", "OK", "Bad"],
+            },
+          ],
+          series: {
+            type: "parallel",
+            lineStyle: {
+              width: 4,
+            },
+            data: [
+              [12.99, 100, 82, "Good"],
+              [9.99, 80, 77, "OK"],
+              [20, 120, 60, "Excellent"],
+            ],
+          },
+        },
+      },
+      dev: ParallelDev,
+      prod: ParallelProd,
       setter: [
         {
           name: "text",

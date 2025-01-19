@@ -49,6 +49,8 @@ export function ComponentAttr() {
     updateHeatMapFromOptions(curComponent, form);
     // 旭日图属性初始化
     updateSunburstFromOptions(curComponent, form);
+    // 平行坐标系属性初始化
+    updateParallelFromOptions(curComponent, form);
   }, [curComponent]);
   // 没有选择组件时候返回null
   if (!curComponentId || !curComponent) return null;
@@ -103,6 +105,7 @@ export function ComponentAttr() {
       updateRadarFromOptions(curComponent, form);
       updateHeatMapFromOptions(curComponent, form);
       updateSunburstFromOptions(curComponent, form);
+      updateParallelFromOptions(curComponent, form);
     } catch (e) {}
   }, 500);
   // 当表单 value 变化的时候，同步到 store
@@ -205,6 +208,16 @@ export function ComponentAttr() {
       options.title.left = changeValues.left || options.title.left;
       setChartOptions(JSON.stringify(options, null, 2));
       updateComponentProps(curComponentId, { options });
+    } else if (curComponent?.name === "Parallel" && curComponentId) {
+      let options = JSON.parse(chartOptions);
+      // 正标题
+      options.title.text = changeValues.text || options.title.text;
+      // 副标题
+      options.title.subtext = changeValues.subtext || options.title.subtext;
+      // title 位置
+      options.title.left = changeValues.left || options.title.left;
+      setChartOptions(JSON.stringify(options, null, 2));
+      updateComponentProps(curComponentId, { options });
     } else if (curComponentId) {
       updateComponentProps(curComponentId, changeValues);
     }
@@ -298,6 +311,12 @@ function updateHeatMapFromOptions(curComponent: any, form: any) {
 }
 function updateSunburstFromOptions(curComponent: any, form: any) {
   if (curComponent?.name === "Sunburst") {
+    const { text, subtext, left } = curComponent.props.options.title;
+    form.setFieldsValue({ text, subtext, left });
+  }
+}
+function updateParallelFromOptions(curComponent: any, form: any) {
+  if (curComponent?.name === "Parallel") {
     const { text, subtext, left } = curComponent.props.options.title;
     form.setFieldsValue({ text, subtext, left });
   }
