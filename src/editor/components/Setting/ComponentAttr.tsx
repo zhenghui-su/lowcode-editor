@@ -51,6 +51,8 @@ export function ComponentAttr() {
     updateSunburstFromOptions(curComponent, form);
     // 平行坐标系属性初始化
     updateParallelFromOptions(curComponent, form);
+    // 桑基图属性初始化
+    updateSankeyFromOptions(curComponent, form);
   }, [curComponent]);
   // 没有选择组件时候返回null
   if (!curComponentId || !curComponent) return null;
@@ -106,6 +108,7 @@ export function ComponentAttr() {
       updateHeatMapFromOptions(curComponent, form);
       updateSunburstFromOptions(curComponent, form);
       updateParallelFromOptions(curComponent, form);
+      updateSankeyFromOptions(curComponent, form);
     } catch (e) {}
   }, 500);
   // 当表单 value 变化的时候，同步到 store
@@ -218,6 +221,16 @@ export function ComponentAttr() {
       options.title.left = changeValues.left || options.title.left;
       setChartOptions(JSON.stringify(options, null, 2));
       updateComponentProps(curComponentId, { options });
+    } else if (curComponent?.name === "Sankey" && curComponentId) {
+      let options = JSON.parse(chartOptions);
+      // 正标题
+      options.title.text = changeValues.text || options.title.text;
+      // 副标题
+      options.title.subtext = changeValues.subtext || options.title.subtext;
+      // title 位置
+      options.title.left = changeValues.left || options.title.left;
+      setChartOptions(JSON.stringify(options, null, 2));
+      updateComponentProps(curComponentId, { options });
     } else if (curComponentId) {
       updateComponentProps(curComponentId, changeValues);
     }
@@ -317,6 +330,12 @@ function updateSunburstFromOptions(curComponent: any, form: any) {
 }
 function updateParallelFromOptions(curComponent: any, form: any) {
   if (curComponent?.name === "Parallel") {
+    const { text, subtext, left } = curComponent.props.options.title;
+    form.setFieldsValue({ text, subtext, left });
+  }
+}
+function updateSankeyFromOptions(curComponent: any, form: any) {
+  if (curComponent?.name === "Sankey") {
     const { text, subtext, left } = curComponent.props.options.title;
     form.setFieldsValue({ text, subtext, left });
   }

@@ -20,6 +20,7 @@ const Container = ({ id, name, children, styles }: CommonComponentProps) => {
       "HeatMap",
       "Sunburst",
       "Parallel",
+      "Sankey",
     ],
     id
   );

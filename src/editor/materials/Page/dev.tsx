@@ -20,6 +20,7 @@ function Page({ id, children, styles }: CommonComponentProps) {
       "HeatMap",
       "Sunburst",
       "Parallel",
+      "Sankey",
     ],
     id
   );

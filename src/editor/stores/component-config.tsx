@@ -31,6 +31,8 @@ import SunburstDev from "../materials/Sunburst/dev";
 import SunburstProd from "../materials/Sunburst/prod";
 import ParallelDev from "../materials/Parallel/dev";
 import ParallelProd from "../materials/Parallel/prod";
+import SankeyDev from "../materials/Sankey/dev";
+import SankeyProd from "../materials/Sankey/prod";
 
 /**
  * 组件属性表单配置
@@ -1291,6 +1293,129 @@ export const useComponentConfigStore = create<State & Action>((set) => ({
       },
       dev: ParallelDev,
       prod: ParallelProd,
+      setter: [
+        {
+          name: "text",
+          label: "正标题",
+          type: "input",
+        },
+        {
+          name: "subtext",
+          label: "副标题",
+          type: "input",
+        },
+        {
+          name: "left",
+          label: "标题位置",
+          type: "select",
+          options: [
+            {
+              label: "居左",
+              value: "left",
+            },
+            {
+              label: "居中",
+              value: "center",
+            },
+            {
+              label: "居右",
+              value: "right",
+            },
+          ],
+        },
+        {
+          name: "options",
+          label: "Echarts配置",
+          type: "json",
+        },
+      ],
+      stylesSetter: [
+        {
+          name: "width",
+          label: "宽度",
+          type: "inputNumber",
+        },
+        {
+          name: "height",
+          label: "高度",
+          type: "inputNumber",
+        },
+      ],
+    },
+    Sankey: {
+      name: "Sankey",
+      desc: "桑基图",
+      defaultProps: {
+        height: "400px",
+        options: {
+          title: {
+            text: "桑基图",
+            subtext: "",
+            left: "left",
+          },
+          series: {
+            type: "sankey",
+            layout: "none",
+            emphasis: {
+              focus: "adjacency",
+            },
+            data: [
+              {
+                name: "a",
+              },
+              {
+                name: "b",
+              },
+              {
+                name: "a1",
+              },
+              {
+                name: "a2",
+              },
+              {
+                name: "b1",
+              },
+              {
+                name: "c",
+              },
+            ],
+            links: [
+              {
+                source: "a",
+                target: "a1",
+                value: 5,
+              },
+              {
+                source: "a",
+                target: "a2",
+                value: 3,
+              },
+              {
+                source: "b",
+                target: "b1",
+                value: 8,
+              },
+              {
+                source: "a",
+                target: "b1",
+                value: 3,
+              },
+              {
+                source: "b1",
+                target: "a1",
+                value: 1,
+              },
+              {
+                source: "b1",
+                target: "c",
+                value: 2,
+              },
+            ],
+          },
+        },
+      },
+      dev: SankeyDev,
+      prod: SankeyProd,
       setter: [
         {
           name: "text",
