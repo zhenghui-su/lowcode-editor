@@ -22,6 +22,7 @@ function Modal({ id, name, children, title, styles }: CommonComponentProps) {
       "Sunburst",
       "Parallel",
       "Sankey",
+      "Globe",
     ],
     id
   );

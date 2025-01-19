@@ -21,6 +21,7 @@ function Page({ id, children, styles }: CommonComponentProps) {
       "Sunburst",
       "Parallel",
       "Sankey",
+      "Globe",
     ],
     id
   );

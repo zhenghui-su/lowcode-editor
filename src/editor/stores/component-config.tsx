@@ -33,33 +33,37 @@ import ParallelDev from "../materials/Parallel/dev";
 import ParallelProd from "../materials/Parallel/prod";
 import SankeyDev from "../materials/Sankey/dev";
 import SankeyProd from "../materials/Sankey/prod";
+import GlobeDev from "../materials/Globe/dev";
+import GlobeProd from "../materials/Globe/prod";
 
-/**
- * 组件属性表单配置
- */
+import BaseTexture from "../../assets/baseTexture.png";
+import Starfield from "../../assets/starfield.png";
+import axios from "axios";
+
+let HDR: any;
+// TODO 提取到外部
+axios.get("/data-gl/asset/pisa.hdr").then((res) => {
+  HDR = res.data;
+});
+
+/** 组件属性表单配置 */
 export interface ComponentSetter {
   name: string;
   label: string;
   type: string;
   [key: string]: any;
 }
-/**
- * 组件事件
- */
+/** 组件事件 */
 export interface ComponentEvent {
   name: string;
   label: string;
 }
-/**
- * 组件方法配置-用于组件联动
- */
+/** 组件方法配置-用于组件联动 */
 export interface ComponentMethod {
   name: string;
   label: string;
 }
-/**
- * 组件配置
- */
+/** 组件配置 */
 export interface ComponentConfig {
   name: string;
   defaultProps: Record<string, any>;
@@ -71,6 +75,8 @@ export interface ComponentConfig {
   dev: any;
   prod: any;
 }
+/** echarts示例图表根节点路径 */
+export const ROOT_PATH = "https://echarts.apache.org/examples";
 // 组件映射配置
 // key: 组件名 value: 组件配置(包括组件实例、默认参数)
 interface State {
@@ -1446,6 +1452,61 @@ export const useComponentConfigStore = create<State & Action>((set) => ({
             },
           ],
         },
+        {
+          name: "options",
+          label: "Echarts配置",
+          type: "json",
+        },
+      ],
+      stylesSetter: [
+        {
+          name: "width",
+          label: "宽度",
+          type: "inputNumber",
+        },
+        {
+          name: "height",
+          label: "高度",
+          type: "inputNumber",
+        },
+      ],
+    },
+    Globe: {
+      name: "Globe",
+      desc: "3D地球",
+      defaultProps: {
+        width: "100%",
+        height: "400px",
+        options: {
+          backgroundColor: "#000",
+          globe: {
+            baseTexture: BaseTexture,
+            heightTexture: BaseTexture,
+            displacementScale: 0.04,
+            shading: "realistic",
+            environment: Starfield,
+            realisticMaterial: {
+              roughness: 0.9,
+            },
+            postEffect: {
+              enable: true,
+            },
+            light: {
+              main: {
+                intensity: 5,
+                shadow: true,
+              },
+              ambientCubemap: {
+                texture: HDR,
+                diffuseIntensity: 0.2,
+              },
+            },
+          },
+        },
+      },
+      dev: GlobeDev,
+      prod: GlobeProd,
+      setter: [
         {
           name: "options",
           label: "Echarts配置",

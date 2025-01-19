@@ -21,6 +21,7 @@ const Container = ({ id, name, children, styles }: CommonComponentProps) => {
       "Sunburst",
       "Parallel",
       "Sankey",
+      "Globe",
     ],
     id
   );
