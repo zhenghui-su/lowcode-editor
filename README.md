@@ -14,4 +14,8 @@
   - Radar 雷达图
   - Scatter 散点图
   - HeatMap 热力图
+  - Sunburst 旭日图
+  - Parallel 平行坐标图
+  - Sankey 桑基图
+  - Globe 3D 地球
   - ..待加入..
