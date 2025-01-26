@@ -1,0 +1,64 @@
+import * as echarts from 'echarts/core';
+import { CommonComponentProps } from '../../interface';
+import { useEffect, useRef } from 'react';
+import {
+	TitleComponent,
+	TitleComponentOption,
+	GridComponent,
+	GridComponentOption,
+} from 'echarts/components';
+import { CandlestickChart, CandlestickSeriesOption } from 'echarts/charts';
+import { CanvasRenderer } from 'echarts/renderers';
+import { useSize } from 'ahooks';
+type EChartsOption = echarts.ComposeOption<
+	TitleComponentOption | GridComponentOption | CandlestickSeriesOption
+>;
+/**
+ * @description K线图
+ */
+function Candlestick({
+	id,
+	options, // 外部传入的配置
+	width,
+	height,
+	styles,
+}: CommonComponentProps & {
+	options: EChartsOption;
+}) {
+	echarts.use([
+		TitleComponent,
+		GridComponent,
+		CandlestickChart,
+		CanvasRenderer,
+	]);
+
+	const divRef = useRef<HTMLDivElement>(null);
+
+	// 拖拽改变大小时实时改变图表宽度
+	const size = useSize(divRef);
+	useEffect(() => {
+		if (divRef.current) {
+			// 初始化图表
+			const myChart = echarts.init(divRef.current);
+
+			// 设置外部传入的配置
+			myChart.setOption(options);
+			myChart.resize();
+			// 清理函数，组件卸载时销毁图表
+			return () => {
+				myChart.dispose();
+			};
+		}
+	}, [id, options, width, height, styles, size?.width]); // 当`id`或`chartOptions`变化时重新初始化图表
+
+	return (
+		<div
+			ref={divRef}
+			data-component-id={id}
+			className='w-[100%]'
+			style={{ width: '100%', height, display: 'inline-block', ...styles }} // 设置图表大小
+		></div>
+	);
+}
+
+export default Candlestick;

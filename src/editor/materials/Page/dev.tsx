@@ -23,6 +23,7 @@ function Page({ id, children, styles }: CommonComponentProps) {
 			'Sankey',
 			'Globe',
 			'River',
+			'Candlestick',
 		],
 		id,
 	);

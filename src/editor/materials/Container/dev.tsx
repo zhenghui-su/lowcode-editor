@@ -23,6 +23,7 @@ const Container = ({ id, name, children, styles }: CommonComponentProps) => {
 			'Sankey',
 			'Globe',
 			'River',
+			'Candlestick',
 		],
 		id,
 	);
