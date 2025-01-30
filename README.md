@@ -18,4 +18,7 @@
   - Parallel 平行坐标图
   - Sankey 桑基图
   - Globe 3D 地球
+  - River 河流图
+  - Candlestick K 线图
+  - Funnel 漏斗图
   - ..待加入..
