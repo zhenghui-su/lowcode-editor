@@ -57,6 +57,8 @@ export function ComponentAttr() {
 		updateRiverFromOptions(curComponent, form);
 		// K线图属性初始化
 		updateCandlestickFromOptions(curComponent, form);
+		// 漏斗图属性初始化
+		updateFunnelFromOptions(curComponent, form);
 	}, [curComponent]);
 	// 没有选择组件时候返回null
 	if (!curComponentId || !curComponent) return null;
@@ -115,8 +117,21 @@ export function ComponentAttr() {
 			updateSankeyFromOptions(curComponent, form);
 			updateRiverFromOptions(curComponent, form);
 			updateCandlestickFromOptions(curComponent, form);
+			updateFunnelFromOptions(curComponent, form);
 		} catch (e) {}
 	}, 500);
+	// 更新基础属性
+	function updateBasicAttributes(changeValues: any, curComponentId: number) {
+		let options = JSON.parse(chartOptions);
+		// 正标题
+		options.title.text = changeValues.text || options.title.text;
+		// 副标题
+		options.title.subtext = changeValues.subtext || options.title.subtext;
+		// title 位置
+		options.title.left = changeValues.left || options.title.left;
+		setChartOptions(JSON.stringify(options, null, 2));
+		updateComponentProps(curComponentId, { options });
+	}
 	// 当表单 value 变化的时候，同步到 store
 	function valueChange(changeValues: any) {
 		if (curComponent?.name === 'Line' && curComponentId) {
@@ -162,101 +177,31 @@ export function ComponentAttr() {
 			if (changeValues.pieDataUrl) {
 				updateComponentProps(curComponentId, changeValues);
 			}
-			let options = JSON.parse(chartOptions);
-			// 正标题
-			options.title.text = changeValues.text || options.title.text;
-			// 副标题
-			options.title.subtext = changeValues.subtext || options.title.subtext;
-			// title 位置
-			options.title.left = changeValues.left || options.title.left;
-			setChartOptions(JSON.stringify(options, null, 2));
-			updateComponentProps(curComponentId, { options });
+			updateBasicAttributes(curComponentId, changeValues);
 		} else if (curComponent?.name === 'Scatter' && curComponentId) {
 			if (changeValues.scatterDataUrl) {
 				updateComponentProps(curComponentId, changeValues);
 			}
-			let options = JSON.parse(chartOptions);
-			// 正标题
-			options.title.text = changeValues.text || options.title.text;
-			// 副标题
-			options.title.subtext = changeValues.subtext || options.title.subtext;
-			// title 位置
-			options.title.left = changeValues.left || options.title.left;
-			setChartOptions(JSON.stringify(options, null, 2));
-			updateComponentProps(curComponentId, { options });
+			updateBasicAttributes(curComponentId, changeValues);
 		} else if (curComponent?.name === 'Radar' && curComponentId) {
 			if (changeValues.radarIndicatorUrl || changeValues.radarDataUrl) {
 				updateComponentProps(curComponentId, changeValues);
 			}
-			let options = JSON.parse(chartOptions);
-			// 正标题
-			options.title.text = changeValues.text || options.title.text;
-			// 副标题
-			options.title.subtext = changeValues.subtext || options.title.subtext;
-			// title 位置
-			options.title.left = changeValues.left || options.title.left;
-			setChartOptions(JSON.stringify(options, null, 2));
-			updateComponentProps(curComponentId, { options });
+			updateBasicAttributes(curComponentId, changeValues);
 		} else if (curComponent?.name === 'HeatMap' && curComponentId) {
-			let options = JSON.parse(chartOptions);
-			// 正标题
-			options.title.text = changeValues.text || options.title.text;
-			// 副标题
-			options.title.subtext = changeValues.subtext || options.title.subtext;
-			// title 位置
-			options.title.left = changeValues.left || options.title.left;
-			setChartOptions(JSON.stringify(options, null, 2));
-			updateComponentProps(curComponentId, { options });
+			updateBasicAttributes(curComponentId, changeValues);
 		} else if (curComponent?.name === 'Sunburst' && curComponentId) {
-			let options = JSON.parse(chartOptions);
-			// 正标题
-			options.title.text = changeValues.text || options.title.text;
-			// 副标题
-			options.title.subtext = changeValues.subtext || options.title.subtext;
-			// title 位置
-			options.title.left = changeValues.left || options.title.left;
-			setChartOptions(JSON.stringify(options, null, 2));
-			updateComponentProps(curComponentId, { options });
+			updateBasicAttributes(curComponentId, changeValues);
 		} else if (curComponent?.name === 'Parallel' && curComponentId) {
-			let options = JSON.parse(chartOptions);
-			// 正标题
-			options.title.text = changeValues.text || options.title.text;
-			// 副标题
-			options.title.subtext = changeValues.subtext || options.title.subtext;
-			// title 位置
-			options.title.left = changeValues.left || options.title.left;
-			setChartOptions(JSON.stringify(options, null, 2));
-			updateComponentProps(curComponentId, { options });
+			updateBasicAttributes(curComponentId, changeValues);
 		} else if (curComponent?.name === 'Sankey' && curComponentId) {
-			let options = JSON.parse(chartOptions);
-			// 正标题
-			options.title.text = changeValues.text || options.title.text;
-			// 副标题
-			options.title.subtext = changeValues.subtext || options.title.subtext;
-			// title 位置
-			options.title.left = changeValues.left || options.title.left;
-			setChartOptions(JSON.stringify(options, null, 2));
-			updateComponentProps(curComponentId, { options });
+			updateBasicAttributes(curComponentId, changeValues);
 		} else if (curComponent?.name === 'River' && curComponentId) {
-			let options = JSON.parse(chartOptions);
-			// 正标题
-			options.title.text = changeValues.text || options.title.text;
-			// 副标题
-			options.title.subtext = changeValues.subtext || options.title.subtext;
-			// title 位置
-			options.title.left = changeValues.left || options.title.left;
-			setChartOptions(JSON.stringify(options, null, 2));
-			updateComponentProps(curComponentId, { options });
+			updateBasicAttributes(curComponentId, changeValues);
 		} else if (curComponent?.name === 'Candlestick' && curComponentId) {
-			let options = JSON.parse(chartOptions);
-			// 正标题
-			options.title.text = changeValues.text || options.title.text;
-			// 副标题
-			options.title.subtext = changeValues.subtext || options.title.subtext;
-			// title 位置
-			options.title.left = changeValues.left || options.title.left;
-			setChartOptions(JSON.stringify(options, null, 2));
-			updateComponentProps(curComponentId, { options });
+			updateBasicAttributes(curComponentId, changeValues);
+		} else if (curComponent?.name === 'Funnel' && curComponentId) {
+			updateBasicAttributes(curComponentId, changeValues);
 		} else if (curComponentId) {
 			updateComponentProps(curComponentId, changeValues);
 		}
@@ -299,7 +244,6 @@ export function ComponentAttr() {
 		</Form>
 	);
 }
-
 function updateLineFromOptions(curComponent: any, form: any) {
 	if (curComponent?.name === 'Line') {
 		const { text, subtext, left } = curComponent.props.options.title;
@@ -374,6 +318,12 @@ function updateRiverFromOptions(curComponent: any, form: any) {
 }
 function updateCandlestickFromOptions(curComponent: any, form: any) {
 	if (curComponent?.name === 'Candlestick') {
+		const { text, subtext, left } = curComponent.props.options.title;
+		form.setFieldsValue({ text, subtext, left });
+	}
+}
+function updateFunnelFromOptions(curComponent: any, form: any) {
+	if (curComponent?.name === 'Funnel') {
 		const { text, subtext, left } = curComponent.props.options.title;
 		form.setFieldsValue({ text, subtext, left });
 	}

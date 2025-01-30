@@ -24,6 +24,7 @@ function Page({ id, children, styles }: CommonComponentProps) {
 			'Globe',
 			'River',
 			'Candlestick',
+			'Funnel',
 		],
 		id,
 	);

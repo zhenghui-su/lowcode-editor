@@ -39,6 +39,8 @@ import RiverDev from '../materials/River/dev';
 import RiverProd from '../materials/River/prod';
 import CandlestickDev from '../materials/Candlestick/dev';
 import CandlestickProd from '../materials/Candlestick/prod';
+import FunnelDev from '../materials/Funnel/dev';
+import FunnelProd from '../materials/Funnel/prod';
 
 import BaseTexture from '../../assets/baseTexture.png';
 import Starfield from '../../assets/starfield.png';
@@ -1796,6 +1798,126 @@ export const useComponentConfigStore = create<State & Action>((set) => ({
 			},
 			dev: CandlestickDev,
 			prod: CandlestickProd,
+			setter: [
+				{
+					name: 'text',
+					label: '正标题',
+					type: 'input',
+				},
+				{
+					name: 'subtext',
+					label: '副标题',
+					type: 'input',
+				},
+				{
+					name: 'left',
+					label: '标题位置',
+					type: 'select',
+					options: [
+						{
+							label: '居左',
+							value: 'left',
+						},
+						{
+							label: '居中',
+							value: 'center',
+						},
+						{
+							label: '居右',
+							value: 'right',
+						},
+					],
+				},
+				{
+					name: 'options',
+					label: 'Echarts配置',
+					type: 'json',
+				},
+			],
+			stylesSetter: [
+				{
+					name: 'width',
+					label: '宽度',
+					type: 'inputNumber',
+				},
+				{
+					name: 'height',
+					label: '高度',
+					type: 'inputNumber',
+				},
+			],
+		},
+		Funnel: {
+			name: 'Funnel',
+			desc: '漏斗图',
+			defaultProps: {
+				height: '400px',
+				options: {
+					title: {
+						text: 'Funnel',
+						left: 'left',
+					},
+					tooltip: {
+						trigger: 'item',
+						formatter: '{a} <br/>{b} : {c}%',
+					},
+					toolbox: {
+						feature: {
+							dataView: { readOnly: false },
+							restore: {},
+							saveAsImage: {},
+						},
+					},
+					legend: {
+						data: ['Show', 'Click', 'Visit', 'Inquiry', 'Order'],
+					},
+					series: [
+						{
+							name: 'Funnel',
+							type: 'funnel',
+							left: '10%',
+							top: 60,
+							bottom: 60,
+							width: '80%',
+							min: 0,
+							max: 100,
+							minSize: '0%',
+							maxSize: '100%',
+							sort: 'descending',
+							gap: 2,
+							label: {
+								show: true,
+								position: 'inside',
+							},
+							labelLine: {
+								length: 10,
+								lineStyle: {
+									width: 1,
+									type: 'solid',
+								},
+							},
+							itemStyle: {
+								borderColor: '#fff',
+								borderWidth: 1,
+							},
+							emphasis: {
+								label: {
+									fontSize: 20,
+								},
+							},
+							data: [
+								{ value: 60, name: 'Visit' },
+								{ value: 40, name: 'Inquiry' },
+								{ value: 20, name: 'Order' },
+								{ value: 80, name: 'Click' },
+								{ value: 100, name: 'Show' },
+							],
+						},
+					],
+				},
+			},
+			dev: FunnelDev,
+			prod: FunnelProd,
 			setter: [
 				{
 					name: 'text',

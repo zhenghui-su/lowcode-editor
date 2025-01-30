@@ -25,6 +25,7 @@ function Modal({ id, name, children, title, styles }: CommonComponentProps) {
 			'Globe',
 			'River',
 			'Candlestick',
+			'Funnel',
 		],
 		id,
 	);
