@@ -208,7 +208,7 @@ export function ComponentAttr() {
 				changeValues.boundaryGap ?? options.xAxis.boundaryGap;
 			options.series.map((item: any) => {
 				// 平滑曲线
-				item.smooth = changeValues.smooth || item.smooth;
+				item.smooth = changeValues.smooth ?? item.smooth;
 				// 面积图透明度
 				item.areaStyle.opacity =
 					changeValues.areaStyleOpacity / 100 || item.areaStyle.opacity;
