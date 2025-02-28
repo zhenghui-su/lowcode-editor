@@ -1,4 +1,14 @@
-import { Form, Input, Select, Slider, Switch } from 'antd';
+import {
+	Form,
+	Input,
+	Select,
+	Slider,
+	Switch,
+	Upload,
+	Button,
+	Tooltip,
+} from 'antd';
+import { InboxOutlined } from '@ant-design/icons';
 import { useComponentsStore } from '../../stores/components';
 import {
 	ComponentSetter,
@@ -11,6 +21,8 @@ import {
 	convertCSVToEcharts,
 	readCSV,
 } from '../../utils/fileDataToEchartsData';
+
+// const { Dragger } = Upload;
 
 /**
  *
@@ -108,11 +120,16 @@ export function ComponentAttr() {
 			// 修改file类型渲染部分
 			case 'file':
 				return (
-					<input
-						type='file'
+					// TODO 文件上传样式待更新, 图表对应格式提示待更新
+					<Upload
+						name='file'
+						multiple={false}
 						accept='.csv'
-						onChange={async (e) => {
-							const file = e.target.files?.[0];
+						maxCount={1}
+						itemRender={(_, file) => <div>{file.name}</div>}
+						// TODO 待更新上传地址
+						onChange={async (info) => {
+							const file = info.file.originFileObj;
 							if (file && curComponent) {
 								const csvData = await readCSV(file);
 								const echartsName = curComponent.name;
@@ -120,7 +137,11 @@ export function ComponentAttr() {
 								updateEchartsDataFromCsvFileData(echartsName, echartsData);
 							}
 						}}
-					/>
+					>
+						<Tooltip title={<div>支持csv格式文件</div>}>
+							<Button icon={<InboxOutlined />}>点击上传</Button>
+						</Tooltip>
+					</Upload>
 				);
 		}
 	}
