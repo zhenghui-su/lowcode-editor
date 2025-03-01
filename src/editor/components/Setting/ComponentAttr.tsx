@@ -95,7 +95,7 @@ export function ComponentAttr() {
 				return <Slider min={0} defaultValue={0} max={100} />;
 			case 'json':
 				return (
-					<div className='h-[200px] border-[1px] border-[#ccc] z-10'>
+					<div className='h-[600px] border-[1px] border-[#ccc] z-10'>
 						<MonacoEditor
 							height={'100%'}
 							path='options.json'
