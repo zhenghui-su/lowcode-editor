@@ -9,6 +9,7 @@ function Page({ id, children, styles }: CommonComponentProps) {
     [
       "Button",
       "Container",
+      "FlexContainer",
       "Modal",
       "Table",
       "Form",
