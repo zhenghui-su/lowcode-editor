@@ -2161,7 +2161,7 @@ export const useComponentConfigStore = create<State & Action>((set) => ({
 				},
 				url: 'https://api.deepseek.com/chat/completions',
 				model: Model.DEEPSEEK_V3,
-				apiKey: 'sk-0031e79e2c18451d9863c0b34520158d',
+				apiKey: '',
 			},
 			dev: AIChartDev,
 			prod: AIChartProd,
