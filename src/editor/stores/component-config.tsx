@@ -43,7 +43,10 @@ import FunnelDev from '../materials/Funnel/dev';
 import FunnelProd from '../materials/Funnel/prod';
 import PressureDev from '../materials/Pressure/dev';
 import PressureProd from '../materials/Pressure/prod';
+import AIChartDev from '../materials/AIChart/dev';
+import AIChartProd from '../materials/AIChart/prod';
 
+import { Model } from '@visactor/vmind';
 import BaseTexture from '../../assets/baseTexture.png';
 import Starfield from '../../assets/starfield.png';
 import axios from 'axios';
@@ -2042,6 +2045,93 @@ export const useComponentConfigStore = create<State & Action>((set) => ({
 					type: 'json',
 				},
 			],
+			stylesSetter: [
+				{
+					name: 'width',
+					label: '宽度',
+					type: 'inputNumber',
+				},
+				{
+					name: 'height',
+					label: '高度',
+					type: 'inputNumber',
+				},
+			],
+		},
+		AIChart: {
+			name: 'AIChart',
+			desc: 'AI图表',
+			defaultProps: {
+				height: '400px',
+				csvData: `
+					商品名称,region,销售额
+					可乐,south,2350
+					可乐,east,1027
+					可乐,west,1027
+					可乐,north,1027
+					雪碧,south,215
+					雪碧,east,654
+					雪碧,west,159
+					雪碧,north,28
+					芬达,south,345
+					芬达,east,654
+					芬达,west,2100
+					芬达,north,1679
+					醒目,south,1476
+					醒目,east,830
+					醒目,west,532
+					醒目,north,498
+				`,
+				spec: {
+					type: 'bar',
+					data: [
+						{
+							id: 'barData',
+							values: [
+								{ month: 'Monday', sales: 22 },
+								{ month: 'Tuesday', sales: 13 },
+								{ month: 'Wednesday', sales: 25 },
+								{ month: 'Thursday', sales: 29 },
+								{ month: 'Friday', sales: 38 },
+							],
+						},
+					],
+					xField: 'month',
+					yField: 'sales',
+				},
+				url: 'https://api.deepseek.com/chat/completions',
+				model: Model.DEEPSEEK_V3,
+				apiKey: 'sk-0031e79e2c18451d9863c0b34520158d',
+			},
+			dev: AIChartDev,
+			prod: AIChartProd,
+			// setter: [
+			// 	{
+			// 		name: 'url',
+			// 		label: '大模型服务url',
+			// 		type: 'input',
+			// 	},
+			// 	{
+			// 		name: 'model',
+			// 		label: '模型',
+			// 		type: 'select',
+			// 		option: [
+			// 			{
+			// 				label: 'DeepSeek-R1',
+			// 				value: Model.DEEPSEEK_R1,
+			// 			},
+			// 			{
+			// 				label: 'DeepSeek-V3',
+			// 				value: Model.DEEPSEEK_V3,
+			// 			},
+			// 		],
+			// 	},
+			// 	{
+			// 		name: 'apiKey',
+			// 		label: 'apiKey',
+			// 		type: 'input',
+			// 	},
+			// ],
 			stylesSetter: [
 				{
 					name: 'width',
