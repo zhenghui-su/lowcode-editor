@@ -45,6 +45,8 @@ import PressureDev from '../materials/Pressure/dev';
 import PressureProd from '../materials/Pressure/prod';
 import AIChartDev from '../materials/AIChart/dev';
 import AIChartProd from '../materials/AIChart/prod';
+import FlexContainerDev from '../materials/FlexContainer/dev';
+import FlexContainerProd from '../materials/FlexContainer/prod';
 
 import { Model } from '@visactor/vmind';
 import BaseTexture from '../../assets/baseTexture.png';
@@ -53,49 +55,49 @@ import axios from 'axios';
 
 let HDR: any;
 // TODO 提取到外部
-axios.get('/data-gl/asset/pisa.hdr').then((res) => {
-	HDR = res.data;
+axios.get("/data-gl/asset/pisa.hdr").then((res) => {
+  HDR = res.data;
 });
 
 /** 组件属性表单配置 */
 export interface ComponentSetter {
-	name: string;
-	label: string;
-	type: string;
-	[key: string]: any;
+  name: string;
+  label: string;
+  type: string;
+  [key: string]: any;
 }
 /** 组件事件 */
 export interface ComponentEvent {
-	name: string;
-	label: string;
+  name: string;
+  label: string;
 }
 /** 组件方法配置-用于组件联动 */
 export interface ComponentMethod {
-	name: string;
-	label: string;
+  name: string;
+  label: string;
 }
 /** 组件配置 */
 export interface ComponentConfig {
-	name: string;
-	defaultProps: Record<string, any>;
-	desc: string;
-	setter?: ComponentSetter[]; // 属性配置
-	stylesSetter?: ComponentSetter[]; // 样式配置
-	events?: ComponentEvent[]; // 事件配置
-	methods?: ComponentMethod[]; // 方法配置
-	dev: any;
-	prod: any;
+  name: string;
+  defaultProps: Record<string, any>;
+  desc: string;
+  setter?: ComponentSetter[]; // 属性配置
+  stylesSetter?: ComponentSetter[]; // 样式配置
+  events?: ComponentEvent[]; // 事件配置
+  methods?: ComponentMethod[]; // 方法配置
+  dev: any;
+  prod: any;
 }
 /** echarts示例图表根节点路径 */
-export const ROOT_PATH = 'https://echarts.apache.org/examples';
+export const ROOT_PATH = "https://echarts.apache.org/examples";
 // 组件映射配置
 // key: 组件名 value: 组件配置(包括组件实例、默认参数)
 interface State {
-	componentConfig: { [key: string]: ComponentConfig };
+  componentConfig: { [key: string]: ComponentConfig };
 }
 
 interface Action {
-	registerConfig: (name: string, componentConfig: ComponentConfig) => void;
+  registerConfig: (name: string, componentConfig: ComponentConfig) => void;
 }
 /**
  * 组件配置 store
@@ -109,6 +111,64 @@ export const useComponentConfigStore = create<State & Action>((set) => ({
 			dev: ContainerDev,
 			prod: ContainerProd,
 		},
+		FlexContainer: {
+      name: "FlexContainer",
+      defaultProps: {
+        gap: "middle",
+        wrap: false,
+        vertical: false,
+        justify: "flex-start",
+        align: "flex-start",
+      },
+      desc: "弹性布局容器",
+      dev: FlexContainerDev,
+      prod: FlexContainerProd,
+      setter: [
+        {
+          name: "gap",
+          label: "间距",
+          type: "select",
+          options: [
+            { label: "大", value: "large" },
+            { label: "中", value: "middle" },
+            { label: "小", value: "small" },
+          ],
+        },
+        {
+          name: "wrap",
+          label: "换行",
+          type: "switch",
+        },
+        {
+          name: "vertical",
+          label: "垂直",
+          type: "switch",
+        },
+        {
+          name: "justify",
+          label: "水平对齐",
+          type: "select",
+          options: [
+            { label: "居左", value: "flex-start" },
+            { label: "居中", value: "center" },
+            { label: "居右", value: "flex-end" },
+            { label: "全均分", value: "space-between" },
+            { label: "中均分", value: "space-around" },
+            { label: "小均分", value: "space-evenly" },
+          ],
+        },
+        {
+          name: "align",
+          label: "垂直对齐",
+          type: "select",
+          options: [
+            { label: "顶部", value: "flex-start" },
+            { label: "居中", value: "center" },
+            { label: "底部", value: "flex-end" },
+          ],
+        },
+      ],
+    },
 		Button: {
 			name: 'Button',
 			defaultProps: {

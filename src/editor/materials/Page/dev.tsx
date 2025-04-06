@@ -5,31 +5,32 @@ import { useMaterialDrop } from '../../hooks/useMaterialDrop';
  * @description 页面组件-dev开发状态
  */
 function Page({ id, children, styles }: CommonComponentProps) {
-	const { canDrop, drop } = useMaterialDrop(
-		[
-			'Button',
-			'Container',
-			'Modal',
-			'Table',
-			'Form',
-			'Line',
-			'Bar',
-			'Pie',
-			'Scatter',
-			'Radar',
-			'HeatMap',
-			'Sunburst',
-			'Parallel',
-			'Sankey',
-			'Globe',
-			'River',
-			'Candlestick',
-			'Funnel',
-			'Pressure',
-			'AIChart',
-		],
-		id,
-	);
+  const { canDrop, drop } = useMaterialDrop(
+    [
+      "Button",
+      "Container",
+			"FlexContainer",
+      "Modal",
+      "Table",
+      "Form",
+      "Line",
+      "Bar",
+      "Pie",
+      "Scatter",
+      "Radar",
+      "HeatMap",
+      "Sunburst",
+      "Parallel",
+      "Sankey",
+      "Globe",
+      "River",
+      "Candlestick",
+      "Funnel",
+      "Pressure",
+			"AIChart"
+    ],
+    id
+  );
 
 	return (
 		<div
