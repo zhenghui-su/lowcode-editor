@@ -33,11 +33,7 @@ async function AIChart({
 	const userPrompt =
 		'show me the changes in sales rankings of various car brand';
 	//调用图表生成接口，获得spec和图表动画时长
-	const { spec, time } = await vmind.generateChart(
-		userPrompt,
-		fieldInfo,
-		dataset,
-	);
+	const { spec } = await vmind.generateChart(userPrompt, fieldInfo, dataset);
 	useEffect(() => {
 		// 创建 vchart 实例
 		const vchart = new VChart(spec, { dom: divRef.current! });

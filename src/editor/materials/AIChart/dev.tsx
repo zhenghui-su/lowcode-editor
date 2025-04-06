@@ -1,5 +1,5 @@
 import { CommonComponentProps } from '../../interface';
-import VMind from '@visactor/vmind';
+// import VMind from '@visactor/vmind';
 import VChart from '@visactor/vchart';
 import { useDrag } from 'react-dnd';
 import { useEffect, useRef } from 'react';
@@ -10,10 +10,10 @@ import { useSize } from 'ahooks';
  */
 function AIChart({
 	id,
-	url,
-	model,
-	apiKey,
-	csvData,
+	// url,
+	// model,
+	// apiKey,
+	// csvData,
 	spec,
 	width,
 	height,
@@ -48,14 +48,14 @@ function AIChart({
 	// 	dataset
 	// );
 
-	function renderChart() {
-		// if (divRef.current && spec) {
-		// 	// 创建 vchart 实例
-		// 	const vchart = new VChart(spec, { dom: 'chart' });
-		// 	// 绘制
-		// 	vchart.renderSync();
-		// }
-	}
+	// function renderChart() {
+	// if (divRef.current && spec) {
+	// 	// 创建 vchart 实例
+	// 	const vchart = new VChart(spec, { dom: 'chart' });
+	// 	// 绘制
+	// 	vchart.renderSync();
+	// }
+	// }
 
 	useEffect(() => {
 		if (divRef.current) {
