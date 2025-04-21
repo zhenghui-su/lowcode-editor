@@ -1,25 +1,25 @@
 import { CommonComponentProps } from '../../interface';
-// import VMind from '@visactor/vmind';
+import VMind from '@visactor/vmind';
 import VChart from '@visactor/vchart';
 import { useDrag } from 'react-dnd';
 import { useEffect, useRef } from 'react';
-import { useSize } from 'ahooks';
+import { message } from 'antd';
 
 /**
  * @description ai生成图表
  */
 function AIChart({
 	id,
-	// url,
-	// model,
-	// apiKey,
+	url,
+	model,
+	apiKey,
 	// csvData,
-	spec,
-	width,
+	userPrompt,
 	height,
 	styles,
 }: CommonComponentProps) {
 	const divRef = useRef<HTMLDivElement>(null);
+	const isFirstRef = useRef<boolean>(true);
 	const [_, drag] = useDrag({
 		type: 'AIChart',
 		item: {
@@ -28,53 +28,77 @@ function AIChart({
 			id: id,
 		},
 	});
-	// 拖拽改变大小时实时改变图表宽度
-	const size = useSize(divRef);
-	// const vmind = new VMind({
-	// 	url, //指定你的大模型服务url。default is https://api.openai.com/v1/chat/completions
-	// 	model: model, //指定你指定的模型
-	// 	headers: {
-	// 		Authorization: `Bearer ${apiKey}`, //Your DEEPSEEK_KEY
-	// 	},
-	// });
-	// const { fieldInfo, dataset } = vmind.parseCSVData(csvData);
-	// const userPrompt =
-	// 	'show me the changes in sales rankings of various car brand';
-	// //调用图表生成接口，获得spec和图表动画时长
-	// ? 如何让这里await去掉，考虑将生成函数抽离出去
-	//   const { spec, time } = await vmind.generateChart(
-	// 	userPrompt,
-	// 	fieldInfo,
-	// 	dataset
-	// );
-
-	// function renderChart() {
-	// if (divRef.current && spec) {
-	// 	// 创建 vchart 实例
-	// 	const vchart = new VChart(spec, { dom: 'chart' });
-	// 	// 绘制
-	// 	vchart.renderSync();
-	// }
-	// }
+	const vmind = new VMind({
+		url,
+		model,
+		maxTokens: 8192,
+		headers: {
+			Authorization: `Bearer ${apiKey}`,
+		},
+	});
+	const csvData = `商品名称,region,销售额
+可乐,south,2350
+可乐,east,1027
+可乐,west,1027
+可乐,north,1027
+雪碧,south,215
+雪碧,east,654
+雪碧,west,159
+雪碧,north,28
+芬达,south,345
+芬达,east,654
+芬达,west,2100
+芬达,north,1679
+醒目,south,1476
+醒目,east,830
+醒目,west,532
+醒目,north,498`;
+	//传入csv字符串，获得fieldInfo和dataset用于图表生成
+	const { fieldInfo, dataset } = vmind.parseCSVData(csvData);
+	// 创建 vchart 实例
+	let vchart: VChart;
+	const generateChart = async () => {
+		message.open({
+			type: 'loading',
+			content: '图表生成中...',
+			duration: 0,
+			key: 'AIChart',
+		});
+		const { spec } = await vmind.generateChart(userPrompt, fieldInfo, dataset);
+		if (spec === undefined) {
+			message.destroy('AIChart');
+			message.error('图表生成失败！您可以尝试重新生成！');
+			return;
+		}
+		if (divRef.current && spec !== undefined) {
+			if (!isFirstRef.current) {
+				vchart = new VChart(spec, { dom: divRef.current });
+				// 绘制
+				vchart.renderAsync();
+				message.destroy('AIChart');
+				message.success('图表生成成功！');
+				return;
+			}
+			if (isFirstRef.current) {
+				isFirstRef.current = false;
+				vchart = new VChart(spec, { dom: divRef.current });
+				// 绘制
+				vchart.renderAsync();
+				message.destroy('AIChart');
+				message.success('图表生成成功！');
+			}
+		}
+	};
 
 	useEffect(() => {
-		if (divRef.current) {
-			const vchart = new VChart(spec, { dom: divRef.current });
-			vchart.renderAsync();
-			console.log('1');
-		}
-	}, []);
-	useEffect(() => {
-		if (divRef.current && size) {
-			const vchart = new VChart(spec, { dom: divRef.current });
-			vchart.resize(size?.width, size.height);
-			return () => {
-				// 清理
-				vchart.clearAllStates();
-			};
-		}
-	}, [id, width, height, styles, size?.width]); // 当`id`或`chartOptions`变化时重新初始化图表
-	// console.log(size?.height);
+		if (userPrompt === '') return;
+		// 调用生成图表的函数
+		generateChart();
+		return () => {
+			vchart.release();
+		};
+	}, [userPrompt]);
+
 	useEffect(() => {
 		// 应用拖拽功能
 		drag(divRef);

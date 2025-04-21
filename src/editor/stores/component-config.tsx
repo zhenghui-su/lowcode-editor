@@ -2118,75 +2118,23 @@ export const useComponentConfigStore = create<State & Action>((set) => ({
 			desc: 'AI图表',
 			defaultProps: {
 				height: '400px',
-				csvData: `
-					商品名称,region,销售额
-					可乐,south,2350
-					可乐,east,1027
-					可乐,west,1027
-					可乐,north,1027
-					雪碧,south,215
-					雪碧,east,654
-					雪碧,west,159
-					雪碧,north,28
-					芬达,south,345
-					芬达,east,654
-					芬达,west,2100
-					芬达,north,1679
-					醒目,south,1476
-					醒目,east,830
-					醒目,west,532
-					醒目,north,498
-				`,
-				spec: {
-					type: 'bar',
-					data: [
-						{
-							id: 'barData',
-							values: [
-								{ month: 'Monday', sales: 22 },
-								{ month: 'Tuesday', sales: 13 },
-								{ month: 'Wednesday', sales: 25 },
-								{ month: 'Thursday', sales: 29 },
-								{ month: 'Friday', sales: 38 },
-							],
-						},
-					],
-					xField: 'month',
-					yField: 'sales',
-				},
+				userPrompt: '',
 				url: 'https://api.deepseek.com/chat/completions',
+				// url: 'https://ark.cn-beijing.volces.com/api/v3/chat/completions',
+				// model: 'ep-20250421164337-7r4j5',
 				model: Model.DEEPSEEK_V3,
-				apiKey: '',
+				// apiKey: '40d2fa8b-0f94-4208-9f0d-5ea939432e56',
+				apiKey: 'sk-d8c7f44254894dddb38204244ad591ed',
 			},
 			dev: AIChartDev,
 			prod: AIChartProd,
-			// setter: [
-			// 	{
-			// 		name: 'url',
-			// 		label: '大模型服务url',
-			// 		type: 'input',
-			// 	},
-			// 	{
-			// 		name: 'model',
-			// 		label: '模型',
-			// 		type: 'select',
-			// 		option: [
-			// 			{
-			// 				label: 'DeepSeek-R1',
-			// 				value: Model.DEEPSEEK_R1,
-			// 			},
-			// 			{
-			// 				label: 'DeepSeek-V3',
-			// 				value: Model.DEEPSEEK_V3,
-			// 			},
-			// 		],
-			// 	},
-			// 	{
-			// 		name: 'apiKey',
-			// 		label: 'apiKey',
-			// 		type: 'input',
-			// 	},
-			// ],
+			setter: [
+				{
+					name: 'userPrompt',
+					label: '用户提示',
+					type: 'prompt',
+				},
+			],
 			stylesSetter: [
 				{
 					name: 'width',

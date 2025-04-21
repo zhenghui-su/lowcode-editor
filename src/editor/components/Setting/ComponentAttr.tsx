@@ -93,6 +93,29 @@ export function ComponentAttr() {
 				return <Switch />;
 			case 'slider':
 				return <Slider min={0} defaultValue={0} max={100} />;
+			case 'prompt':
+				return (
+					<div style={{ display: 'flex', flexDirection: 'column' }}>
+						<Input.TextArea
+							defaultValue={curComponent?.props.userPrompt}
+							onBlur={(e) => {
+								form.setFieldValue('userPrompt', e.target.value);
+							}}
+						/>
+						<Button
+							onClick={() => {
+								const userPrompt = form.getFieldValue('userPrompt');
+								if (userPrompt && curComponentId) {
+									updateComponentProps(curComponentId, {
+										userPrompt,
+									});
+								}
+							}}
+						>
+							发送
+						</Button>
+					</div>
+				);
 			case 'json':
 				return (
 					<div className='h-[600px] border-[1px] border-[#ccc] z-10'>
@@ -262,7 +285,7 @@ export function ComponentAttr() {
 			updateBasicAttributes(curComponentId, changeValues);
 		} else if (curComponent?.name === 'Pressure' && curComponentId) {
 			updateBasicAttributes(curComponentId, changeValues);
-		} else if (curComponentId) {
+		} else if (curComponentId && curComponent?.name !== 'AIChart') {
 			updateComponentProps(curComponentId, changeValues);
 		}
 	}
