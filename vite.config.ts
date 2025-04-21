@@ -1,7 +1,7 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
-import viteCompression from 'vite-plugin-compression';
-import cdn from 'vite-plugin-cdn-import';
+// import viteCompression from 'vite-plugin-compression';
+// import cdn from 'vite-plugin-cdn-import';
 
 // https://vite.dev/config/
 export default defineConfig({
