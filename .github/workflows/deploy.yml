@@ -29,16 +29,16 @@ jobs:
           node-version: lts/*
 
       - name: Install step
-        run: "npm install"
+        run: 'npm install'
 
       - name: Build step
-        run: "npm run build"
+        run: 'npm run build'
+        env:
+          VITE_DEEPSEEK_API_KEY: ${{ secrets.VITE_DEEPSEEK_API_KEY }}
 
       - name: Upload to Deno Deploy
         uses: denoland/deployctl@v1
         with:
-          project: "su-lowcode-editor"
-          entrypoint: "https://deno.land/std@0.217.0/http/file_server.ts"
-          root: "dist"
-          
-          
+          project: 'su-lowcode-editor'
+          entrypoint: 'https://deno.land/std@0.217.0/http/file_server.ts'
+          root: 'dist'
