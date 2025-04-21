@@ -95,7 +95,10 @@ function AIChart({
 		// 调用生成图表的函数
 		generateChart();
 		return () => {
-			vchart.release();
+			if (vchart) {
+				message.destroy('AIChart');
+				vchart.release();
+			}
 		};
 	}, [userPrompt]);
 
