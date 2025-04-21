@@ -55,9 +55,11 @@ import axios from 'axios';
 
 let HDR: any;
 // TODO 提取到外部
-axios.get('/data-gl/asset/pisa.hdr').then((res) => {
-	HDR = res.data;
-});
+axios
+	.get('https://echarts.apache.org/examples/data-gl/asset/pisa.hdr')
+	.then((res) => {
+		HDR = res.data;
+	});
 
 /** 组件属性表单配置 */
 export interface ComponentSetter {
