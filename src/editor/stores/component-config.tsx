@@ -43,17 +43,25 @@ import FunnelDev from '../materials/Funnel/dev';
 import FunnelProd from '../materials/Funnel/prod';
 import PressureDev from '../materials/Pressure/dev';
 import PressureProd from '../materials/Pressure/prod';
+import AIChartDev from '../materials/AIChart/dev';
+import AIChartProd from '../materials/AIChart/prod';
 import FlexContainerDev from '../materials/FlexContainer/dev';
 import FlexContainerProd from '../materials/FlexContainer/prod';
 import ModelViewerDev from '../materials/ModelViewer/dev';
 import ModelViewerProd from '../materials/ModelViewer/prod';
 
+import { Model } from '@visactor/vmind';
 import BaseTexture from '../../assets/baseTexture.png';
 import Starfield from '../../assets/starfield.png';
 import axios from 'axios';
 
 let HDR: any;
 // TODO 提取到外部
+axios
+	.get('https://echarts.apache.org/examples/data-gl/asset/pisa.hdr')
+	.then((res) => {
+		HDR = res.data;
+	});
 axios.get('/data-gl/asset/pisa.hdr').then((res) => {
 	HDR = res.data;
 });
@@ -89,6 +97,7 @@ export interface ComponentConfig {
 }
 /** echarts示例图表根节点路径 */
 export const ROOT_PATH = 'https://echarts.apache.org/examples';
+
 // 组件映射配置
 // key: 组件名 value: 组件配置(包括组件实例、默认参数)
 interface State {
@@ -2130,6 +2139,26 @@ export const useComponentConfigStore = create<State & Action>((set) => ({
 					name: 'height',
 					label: '高度',
 					type: 'inputNumber',
+				},
+			],
+		},
+		AIChart: {
+			name: 'AIChart',
+			desc: 'AI图表',
+			defaultProps: {
+				height: '400px',
+				userPrompt: '',
+				url: 'https://api.deepseek.com/chat/completions',
+				model: Model.DEEPSEEK_V3,
+				apiKey: import.meta.env.VITE_DEEPSEEK_API_KEY,
+			},
+			dev: AIChartDev,
+			prod: AIChartProd,
+			setter: [
+				{
+					name: 'userPrompt',
+					label: '用户提示',
+					type: 'prompt',
 				},
 			],
 		},
