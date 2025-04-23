@@ -27,6 +27,7 @@ function Page({ id, children, styles }: CommonComponentProps) {
       "Candlestick",
       "Funnel",
       "Pressure",
+      "ModelViewer",
     ],
     id
   );
