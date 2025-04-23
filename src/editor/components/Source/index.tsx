@@ -14,23 +14,25 @@ export function Source() {
 	};
 
 	return (
-		<MonacoEditor
-			height={'100%'}
-			path='components.json'
-			language='json'
-			onMount={handleEditorMount}
-			value={JSON.stringify(components, null, 2)}
-			options={{
-				fontSize: 14,
-				scrollBeyondLastLine: false,
-				minimap: {
-					enabled: false,
-				},
-				scrollbar: {
-					verticalScrollbarSize: 6,
-					horizontalScrollbarSize: 6,
-				},
-			}}
-		/>
+		<div className='h-[calc(100vh-60px-30px-20px)]'>
+			<MonacoEditor
+				height={'100%'}
+				path='components.json'
+				language='json'
+				onMount={handleEditorMount}
+				value={JSON.stringify(components, null, 2)}
+				options={{
+					fontSize: 14,
+					scrollBeyondLastLine: false,
+					minimap: {
+						enabled: false,
+					},
+					scrollbar: {
+						verticalScrollbarSize: 6,
+						horizontalScrollbarSize: 6,
+					},
+				}}
+			/>
+		</div>
 	);
 }
