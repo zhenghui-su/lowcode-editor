@@ -123,7 +123,7 @@ export const useComponentConfigStore = create<State & Action>((set) => ({
 			name: 'FlexContainer',
 			defaultProps: {
 				gap: 'middle',
-				wrap: false,
+				wrap: true,
 				vertical: false,
 				justify: 'flex-start',
 				align: 'flex-start',
@@ -141,11 +141,6 @@ export const useComponentConfigStore = create<State & Action>((set) => ({
 						{ label: '中', value: 'middle' },
 						{ label: '小', value: 'small' },
 					],
-				},
-				{
-					name: 'wrap',
-					label: '换行',
-					type: 'switch',
 				},
 				{
 					name: 'vertical',
