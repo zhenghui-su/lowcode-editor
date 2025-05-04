@@ -12,6 +12,15 @@ export function Header() {
 			<div className='h-[50px] flex justify-between items-center px-[20px]'>
 				<div>低代码编辑器</div>
 				<Space>
+					<Button
+						onClick={() => {
+							localStorage.removeItem('components');
+							window.location.reload();
+						}}
+						type='primary'
+					>
+						恢复初始状态
+					</Button>
 					{mode === 'edit' && (
 						<Button
 							onClick={() => {
