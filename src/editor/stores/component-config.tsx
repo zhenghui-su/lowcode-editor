@@ -177,6 +177,7 @@ export const useComponentConfigStore = create<State & Action>((set) => ({
 			desc: '模型展示器',
 			defaultProps: {
 				modelPath: '/models/Ak12/ak12.gltf',
+				// modelPath: '/models/LittlestTokyo/LittlestTokyo.glb',
 			},
 			dev: ModelViewerDev,
 			prod: ModelViewerProd,
