@@ -13,7 +13,7 @@ function AIChart({
 	url,
 	model,
 	apiKey,
-	// csvData,
+	csvData,
 	userPrompt,
 	height,
 	styles,
@@ -36,28 +36,44 @@ function AIChart({
 			Authorization: `Bearer ${apiKey}`,
 		},
 	});
-	const csvData = `商品名称,region,销售额
-可乐,south,2350
-可乐,east,1027
-可乐,west,1027
-可乐,north,1027
-雪碧,south,215
-雪碧,east,654
-雪碧,west,159
-雪碧,north,28
-芬达,south,345
-芬达,east,654
-芬达,west,2100
-芬达,north,1679
-醒目,south,1476
-醒目,east,830
-醒目,west,532
-醒目,north,498`;
-	//传入csv字符串，获得fieldInfo和dataset用于图表生成
-	const { fieldInfo, dataset } = vmind.parseCSVData(csvData);
+
 	// 创建 vchart 实例
 	let vchart: VChart;
+
+	// 检查缓存中是否有匹配当前提示词和CSV数据的图表
+	const checkCache = () => {
+		const cachedData = localStorage.getItem('AIChartData');
+		if (cachedData) {
+			try {
+				const { prompt, csv, spec } = JSON.parse(cachedData);
+				// 如果缓存的提示词和CSV数据与当前相同，直接使用缓存的spec
+				if (prompt === userPrompt && csv === csvData && spec) {
+					return spec;
+				}
+			} catch (error) {
+				console.error('解析缓存数据失败:', error);
+			}
+		}
+		return null;
+	};
+
 	const generateChart = async () => {
+		if (csvData === '') return;
+		if (userPrompt === '') return;
+
+		// 检查缓存
+		const cachedSpec = checkCache();
+		if (cachedSpec) {
+			if (divRef.current) {
+				if (vchart) vchart.release();
+				vchart = new VChart(cachedSpec, { dom: divRef.current });
+				vchart.renderAsync();
+				return;
+			}
+		}
+
+		//传入csv字符串，获得fieldInfo和dataset用于图表生成
+		const { fieldInfo, dataset } = vmind.parseCSVData(csvData);
 		message.open({
 			type: 'loading',
 			content: '图表生成中...',
@@ -71,6 +87,17 @@ function AIChart({
 			return;
 		}
 		if (divRef.current && spec !== undefined) {
+			// 保存图表规格和生成它的提示词与CSV数据
+			localStorage.setItem('AIChart', JSON.stringify(spec));
+			localStorage.setItem(
+				'AIChartData',
+				JSON.stringify({
+					prompt: userPrompt,
+					csv: csvData,
+					spec: spec,
+				}),
+			);
+
 			if (!isFirstRef.current) {
 				vchart = new VChart(spec, { dom: divRef.current });
 				// 绘制
@@ -92,6 +119,7 @@ function AIChart({
 
 	useEffect(() => {
 		if (userPrompt === '') return;
+		if (csvData === '') return;
 		// 调用生成图表的函数
 		generateChart();
 		return () => {
@@ -100,7 +128,7 @@ function AIChart({
 				vchart.release();
 			}
 		};
-	}, [userPrompt]);
+	}, [userPrompt, csvData]);
 
 	useEffect(() => {
 		// 应用拖拽功能

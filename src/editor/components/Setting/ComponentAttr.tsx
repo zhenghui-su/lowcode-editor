@@ -7,6 +7,7 @@ import {
 	Upload,
 	Button,
 	Tooltip,
+	message,
 } from 'antd';
 import { InboxOutlined } from '@ant-design/icons';
 import { useComponentsStore } from '../../stores/components';
@@ -105,10 +106,12 @@ export function ComponentAttr() {
 						<Button
 							onClick={() => {
 								const userPrompt = form.getFieldValue('userPrompt');
+								if (userPrompt === '') message.error('请输入提示词');
 								if (userPrompt && curComponentId) {
 									updateComponentProps(curComponentId, {
 										userPrompt,
 									});
+									message.success('发送成功');
 								}
 							}}
 						>
@@ -154,6 +157,13 @@ export function ComponentAttr() {
 						// TODO 待更新上传地址
 						onChange={async (info) => {
 							const file = info.file.originFileObj;
+							if (file && curComponent?.name === 'AIChart' && curComponentId) {
+								const csvData = await readCSV(file);
+								updateComponentProps(curComponentId, {
+									csvData,
+								});
+								return;
+							}
 							if (file && curComponent) {
 								const csvData = await readCSV(file);
 								const echartsName = curComponent.name;
@@ -326,6 +336,8 @@ export function ComponentAttr() {
 			// const name = file.name;
 			// console.log(modelPath);
 			// updateComponentProps(curComponentId, { modelPath });
+		} else if (curComponent?.name === 'AIChart' && curComponentId) {
+			return;
 		} else if (curComponentId) {
 			updateComponentProps(curComponentId, changeValues);
 		}

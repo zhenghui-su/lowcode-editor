@@ -2151,6 +2151,11 @@ export const useComponentConfigStore = create<State & Action>((set) => ({
 			prod: AIChartProd,
 			setter: [
 				{
+					name: 'csvData',
+					label: 'CSV数据',
+					type: 'file',
+				},
+				{
 					name: 'userPrompt',
 					label: '用户提示',
 					type: 'prompt',
