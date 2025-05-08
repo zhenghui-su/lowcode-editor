@@ -49,6 +49,8 @@ import FlexContainerDev from '../materials/FlexContainer/dev';
 import FlexContainerProd from '../materials/FlexContainer/prod';
 import ModelViewerDev from '../materials/ModelViewer/dev';
 import ModelViewerProd from '../materials/ModelViewer/prod';
+import ThreeDViewerDev from '../materials/3DViewer/dev';
+import ThreeDViewerProd from '../materials/3DViewer/prod';
 
 import { Model } from '@visactor/vmind';
 import BaseTexture from '../../assets/baseTexture.png';
@@ -188,6 +190,13 @@ export const useComponentConfigStore = create<State & Action>((set) => ({
 					type: 'modelFile',
 				},
 			],
+		},
+		ThreeDViewer: {
+			name: 'ThreeDViewer',
+			desc: '3D模型展示器',
+			defaultProps: {},
+			dev: ThreeDViewerDev,
+			prod: ThreeDViewerProd,
 		},
 		Button: {
 			name: 'Button',
@@ -418,6 +427,9 @@ export const useComponentConfigStore = create<State & Action>((set) => ({
 					title: {
 						text: '折线图',
 					},
+					tooltip: {
+						trigger: 'axis',
+					},
 					xAxis: {
 						type: 'category',
 						boundaryGap: true,
@@ -583,6 +595,11 @@ export const useComponentConfigStore = create<State & Action>((set) => ({
 					name: 'alignWithLabel',
 					label: '轴刻度对齐标签',
 					type: 'switch',
+				},
+				{
+					name: 'csvFile',
+					label: 'csv数据文件',
+					type: 'file',
 				},
 				{
 					name: 'barXAxisUrl',

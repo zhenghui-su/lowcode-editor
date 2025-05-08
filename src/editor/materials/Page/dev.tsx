@@ -29,6 +29,7 @@ function Page({ id, children, styles }: CommonComponentProps) {
 			'Pressure',
 			'AIChart',
 			'ModelViewer',
+			'ThreeDViewer',
 		],
 		id
 	);
