@@ -169,6 +169,8 @@ export function ComponentAttr() {
 								const echartsName = curComponent.name;
 								const echartsData = convertCSVToEcharts(csvData, echartsName);
 								updateEchartsDataFromCsvFileData(echartsName, echartsData);
+
+								// setChartOptions(JSON.stringify(newOptions, null, 2));
 							}
 						}}
 					>
@@ -215,13 +217,13 @@ export function ComponentAttr() {
 	}
 	const updateEchartsDataFromCsvFileData = (name: string, echartsData: any) => {
 		if (name == 'Line' && curComponentId) {
-			const xAsisData = echartsData.xAxisData;
-			const seriesData = echartsData.series[0].data;
+			const xAxisData = echartsData.xAxisData;
+			const seriesData = echartsData.series;
 			let options = JSON.parse(chartOptions);
-
-			options.xAxis.data = xAsisData;
-			options.series[0].data = seriesData;
+			options.xAxis.data = xAxisData;
+			options.series = seriesData;
 			updateComponentProps(curComponentId, { options });
+			setChartOptions(JSON.stringify(options, null, 2));
 		}
 	};
 
@@ -383,9 +385,15 @@ export function ComponentAttr() {
 function updateLineFromOptions(curComponent: any, form: any) {
 	if (curComponent?.name === 'Line') {
 		const { text, subtext, left } = curComponent.props.options.title;
-		const { smooth } = curComponent.props.options.series[0];
-		const areaStyleOpacity =
-			curComponent.props.options.series[0].areaStyle.opacity * 100;
+		let smooth;
+		let areaStyleOpacity;
+		if (curComponent.props.options.series.length < 2) {
+			const { smooth: smooth1 } = curComponent.props.options.series[0];
+			smooth = smooth1;
+			const areaStyleOpacity1 =
+				curComponent.props.options.series[0].areaStyle.opacity * 100;
+			areaStyleOpacity = areaStyleOpacity1;
+		}
 		const boundaryGap = curComponent.props.options.xAxis.boundaryGap;
 		form.setFieldsValue({
 			text,
