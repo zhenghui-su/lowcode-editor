@@ -1,9 +1,10 @@
-import { Canvas, useLoader } from '@react-three/fiber';
+import { Canvas, useLoader, useFrame } from '@react-three/fiber';
 import { useRef, Suspense, useEffect } from 'react';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { OrbitControls } from '@react-three/drei';
 import { CommonComponentProps } from '../../interface';
 import { useDrag } from 'react-dnd';
+import * as THREE from 'three';
 
 // 类型定义
 interface ModelViewerProps extends CommonComponentProps {
@@ -15,7 +16,16 @@ interface ModelViewerProps extends CommonComponentProps {
 // 模型加载组件
 const Model = ({ modelPath }: { modelPath: string }) => {
 	const gltf = useLoader(GLTFLoader, modelPath);
-	return <primitive object={gltf.scene} scale={0.5} />;
+	const modelRef = useRef<THREE.Group>();
+
+	// 添加自动旋转动画
+	useFrame(() => {
+		if (modelRef.current) {
+			modelRef.current.rotation.y += 0.005; // 控制旋转速度
+		}
+	});
+
+	return <primitive ref={modelRef} object={gltf.scene} scale={0.5} />;
 };
 
 // 容器组件
@@ -66,7 +76,12 @@ const ModelViewer = ({
 				<Suspense fallback={<Fallback />}>
 					<Model modelPath={modelPath} />
 				</Suspense>
-				<OrbitControls ref={controlsRef} enableZoom={true} enablePan={false} />
+				<OrbitControls
+					ref={controlsRef}
+					enableZoom={true}
+					enablePan={false}
+					enableRotate={false} // 禁用旋转，只允许缩放
+				/>
 			</Canvas>
 		</div>
 	);
