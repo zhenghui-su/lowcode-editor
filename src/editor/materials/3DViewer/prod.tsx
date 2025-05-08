@@ -13,33 +13,6 @@ function ThreeDViewer({ id, styles }: CommonComponentProps) {
 	const divRef = useRef<HTMLDivElement>(null);
 	const [isRotating, setIsRotating] = useState(true);
 	const modelPath = '/models/LittlestTokyo/LittlestTokyo.glb';
-	const controlsRef = useRef<any>(null);
-	const [size, setSize] = useState({
-		width: window.innerWidth,
-		height: window.innerHeight,
-	});
-
-	// 处理窗口大小调整
-	useEffect(() => {
-		const handleResize = () => {
-			setSize({
-				width: window.innerWidth,
-				height: window.innerHeight,
-			});
-		};
-
-		window.addEventListener('resize', handleResize);
-		return () => {
-			window.removeEventListener('resize', handleResize);
-		};
-	}, []);
-
-	// 更新控制器
-	useFrame(() => {
-		if (controlsRef.current) {
-			controlsRef.current.update();
-		}
-	});
 
 	// 阻止Canvas区域的拖拽冒泡
 	const handleCanvasPointerDown = (e: React.PointerEvent) => {
@@ -55,16 +28,15 @@ function ThreeDViewer({ id, styles }: CommonComponentProps) {
 		<div
 			ref={divRef}
 			data-component-id={id}
-			className='w-full h-[500px] relative'
+			className='w-full h-[500px] relative cursor-move'
 			style={{ ...styles, userSelect: 'none' }}
 		>
 			<Canvas
-				camera={{ position: [5, 2, 8], fov: 40 }}
-				style={{ position: 'absolute', background: '#bfe3dd' }}
+				camera={{ position: [10, 5, 10], fov: 45 }}
+				style={{ position: 'absolute' }}
 				onPointerDown={handleCanvasPointerDown}
 				onPointerUp={handleCanvasPointerDown}
 			>
-				<color attach='background' args={['#bfe3dd']} />
 				<ambientLight intensity={0.8} />
 				<pointLight position={[10, 10, 10]} intensity={1.5} />
 				<directionalLight position={[-5, 5, 5]} intensity={1} castShadow />
@@ -73,13 +45,10 @@ function ThreeDViewer({ id, styles }: CommonComponentProps) {
 					<Environment preset='city' />
 				</Suspense>
 				<OrbitControls
-					ref={controlsRef}
 					enableZoom={true}
-					enablePan={false}
+					enablePan={true}
 					enableRotate={true}
-					enableDamping={true}
-					target={[0, 0.5, 0]}
-					minDistance={1}
+					minDistance={5}
 					maxDistance={20}
 				/>
 			</Canvas>
@@ -90,9 +59,6 @@ function ThreeDViewer({ id, styles }: CommonComponentProps) {
 				>
 					{isRotating ? '暂停旋转' : '开始旋转'}
 				</button>
-			</div>
-			<div className='absolute top-4 left-4 z-10 text-xs text-gray-700'>
-				<p>Model: Littlest Tokyo by Glen Fox, CC Attribution</p>
 			</div>
 		</div>
 	);
@@ -124,18 +90,28 @@ const TokyoModel = ({
 		// 确保每个loader实例都有DRACOLoader
 		(loader as GLTFLoader).setDRACOLoader(dracoLoader);
 	});
-
 	const modelRef = useRef<THREE.Group>();
-	const mixerRef = useRef<THREE.AnimationMixer>();
-	const actionRef = useRef<THREE.AnimationAction>();
-	const clockRef = useRef<THREE.Clock>(new THREE.Clock());
 
-	// 初始化动画混合器和动作
+	// 启用模型自带的动画
+	useFrame(({ clock }) => {
+		if (
+			modelRef.current &&
+			gltf.animations &&
+			gltf.animations.length > 0 &&
+			isRotating
+		) {
+			// 使用模型自带的动画，而不是手动旋转
+			const mixer = new THREE.AnimationMixer(modelRef.current);
+			const action = mixer.clipAction(gltf.animations[0]);
+			action.play();
+			mixer.update(clock.getDelta());
+		}
+	});
+
 	useEffect(() => {
-		if (gltf && gltf.scene && gltf.animations && gltf.animations.length > 0) {
-			// 调整模型位置和比例
-			gltf.scene.position.set(1, 1, 0); // 与原示例保持一致
-			gltf.scene.scale.set(0.01, 0.01, 0.01);
+		if (gltf && gltf.scene) {
+			// 调整模型位置和比例 - 位置更高
+			gltf.scene.position.set(0, 0, 0); // y轴从-2调整为0，使模型位置更高
 
 			// 为模型添加阴影
 			gltf.scene.traverse((child) => {
@@ -144,47 +120,10 @@ const TokyoModel = ({
 					child.receiveShadow = true;
 				}
 			});
-
-			// 创建动画混合器 - 只创建一次
-			if (!mixerRef.current) {
-				mixerRef.current = new THREE.AnimationMixer(gltf.scene);
-				actionRef.current = mixerRef.current.clipAction(gltf.animations[0]);
-				// 初始状态下播放动画
-				if (isRotating) {
-					actionRef.current.play();
-				}
-			}
 		}
+	}, [gltf]);
 
-		return () => {
-			// 清理动画混合器
-			if (mixerRef.current) {
-				mixerRef.current.stopAllAction();
-				mixerRef.current = undefined;
-			}
-		};
-	}, [gltf, isRotating]);
-
-	// 控制动画播放/暂停
-	useEffect(() => {
-		if (actionRef.current) {
-			if (isRotating) {
-				actionRef.current.play();
-			} else {
-				actionRef.current.stop();
-			}
-		}
-	}, [isRotating]);
-
-	// 更新动画
-	useFrame(() => {
-		if (mixerRef.current && isRotating) {
-			const delta = clockRef.current.getDelta();
-			mixerRef.current.update(delta);
-		}
-	});
-
-	return <primitive ref={modelRef} object={gltf.scene} />;
+	return <primitive ref={modelRef} object={gltf.scene} scale={0.01} />;
 };
 
 // 加载状态组件

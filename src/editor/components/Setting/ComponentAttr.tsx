@@ -208,7 +208,7 @@ export function ComponentAttr() {
 							// }
 						}}
 					>
-						<Tooltip title={<div>支持gltf, glb</div>}>
+						<Tooltip title={<div>支持gltf</div>}>
 							<Button icon={<InboxOutlined />}>点击上传</Button>
 						</Tooltip>
 					</Upload>
