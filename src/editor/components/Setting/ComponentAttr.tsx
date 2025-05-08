@@ -292,8 +292,9 @@ export function ComponentAttr() {
 	}, 500);
 
 	// 更新基础属性
-	function updateBasicAttributes(changeValues: any, curComponentId: number) {
+	function updateBasicAttributes(curComponentId: number, changeValues: any) {
 		let options = JSON.parse(chartOptions);
+		console.log(changeValues);
 		// 正标题
 		options.title.text = changeValues.text || options.title.text;
 		// 副标题
