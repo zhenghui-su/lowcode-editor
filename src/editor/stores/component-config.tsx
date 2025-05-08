@@ -540,6 +540,9 @@ export const useComponentConfigStore = create<State & Action>((set) => ({
 					title: {
 						text: '柱状图',
 					},
+					tooltip: {
+						trigger: 'axis',
+					},
 					xAxis: {
 						type: 'category',
 						data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
@@ -703,6 +706,11 @@ export const useComponentConfigStore = create<State & Action>((set) => ({
 					],
 				},
 				{
+					name: 'csvFile',
+					label: 'csv数据文件',
+					type: 'file',
+				},
+				{
 					name: 'pieDataUrl',
 					label: '饼图数据请求',
 					type: 'input',
@@ -734,6 +742,19 @@ export const useComponentConfigStore = create<State & Action>((set) => ({
 				options: {
 					title: {
 						text: '散点图',
+					},
+					tooltip: {
+						trigger: 'axis',
+						// axisPointer: {
+						// 	type: 'cross',
+						// },
+					},
+					legend: {
+						type: 'scroll',
+						top: '5%',
+						bottom: '15%',
+						left: 'right',
+						orient: 'vertical',
 					},
 					xAxis: {},
 					yAxis: {},
@@ -802,6 +823,11 @@ export const useComponentConfigStore = create<State & Action>((set) => ({
 					],
 				},
 				{
+					name: 'csvFile',
+					label: 'csv数据文件',
+					type: 'file',
+				},
+				{
 					name: 'scatterDataUrl',
 					label: '散点图数据请求',
 					type: 'input',
@@ -834,6 +860,9 @@ export const useComponentConfigStore = create<State & Action>((set) => ({
 					title: {
 						text: '雷达图',
 					},
+					tooltip: {
+						trigger: 'axis',
+					},
 					legend: {
 						data: ['Allocated Budget', 'Actual Spending'],
 					},
@@ -852,6 +881,9 @@ export const useComponentConfigStore = create<State & Action>((set) => ({
 						{
 							name: 'Budget vs spending',
 							type: 'radar',
+							tooltip: {
+								trigger: 'item',
+							},
 							data: [
 								{
 									value: [4200, 3000, 20000, 35000, 50000, 18000],
@@ -897,6 +929,11 @@ export const useComponentConfigStore = create<State & Action>((set) => ({
 							value: 'right',
 						},
 					],
+				},
+				{
+					name: 'csvFile',
+					label: 'csv数据文件',
+					type: 'file',
 				},
 				{
 					name: 'radarIndicatorUrl',
@@ -1218,6 +1255,11 @@ export const useComponentConfigStore = create<State & Action>((set) => ({
 							value: 'right',
 						},
 					],
+				},
+				{
+					name: 'csvFile',
+					label: 'csv数据文件',
+					type: 'file',
 				},
 				{
 					name: 'options',

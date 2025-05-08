@@ -51,11 +51,9 @@ export const convertCSVToEcharts = (csvString: string, chartType?: string) => {
 	if (commonData.length > 0 && isTimeColumn(commonData[0][headers[0]])) {
 		commonData.sort((a, b) => a[headers[0]] - b[headers[0]]);
 	}
-
 	switch (chartType) {
 		case 'Line':
-		case 'Bar':
-			// 折线图/柱状图：xAxis + 多个系列（支持堆叠）
+			// 折线图 xAxis + 多个系列（支持堆叠）
 			if (headers.length < 2) return commonData;
 
 			return {
@@ -64,75 +62,232 @@ export const convertCSVToEcharts = (csvString: string, chartType?: string) => {
 					name: header,
 					type: chartType.toLowerCase(),
 					stack: 'Total', // 堆叠模式
-					// itemStyle: { opacity: 0.8 },
+					smooth: false,
+					areaStyle: {
+						opacity: 0,
+					},
 					data: commonData.map((item) => item[header]),
 				})),
 			};
-
-		case 'Pie':
-			// 饼图：label + value
+		case 'Bar':
 			if (headers.length < 2) return commonData;
 
 			return {
-				series: [
-					{
-						type: 'pie',
-						radius: ['40%', '70%'],
-						avoidLabelOverlap: false,
-						label: { show: false },
-						emphasis: {
-							label: { show: true, fontSize: '16', fontWeight: 'bold' },
-						},
-						data: commonData.map((item) => ({
-							name: item[headers[0]],
-							value: item[headers[1]],
-						})),
-					},
-				],
+				xAxisData: commonData.map((item) => item[headers[0]]),
+				series: headers.slice(1).map((header) => ({
+					name: header,
+					type: 'bar',
+					stack: 'Total', // 堆叠模式
+					data: commonData.map((item) => item[header]),
+				})),
 			};
-
 		case 'Scatter':
 			// 散点图：需要两个数值列作为坐标
 			if (headers.length < 2) return commonData;
 
-			return {
-				series: [
-					{
-						type: 'scatter',
-						symbolSize: (data: number[]) => Math.sqrt(data[1]) * 2, // 根据值大小调整点的尺寸
-						data: commonData.map((item) => [
-							item[headers[0]],
-							item[headers[1]],
-						]),
-						markPoint: {
-							data: [{ type: 'max', name: '最大值' }],
-						},
-					},
-				],
-			};
+			//headers.slice(1); // ['2016', '2017', ..., '2021']
 
+			// 将每个城市的每一年转化为散点图数据项
+			const seriesMap: Record<string, { data: number[][] }> = {};
+
+			commonData.forEach((item) => {
+				const city = item[headers[0]]; // 城市名
+				seriesMap[city] = { data: [] };
+
+				headers.slice(1).forEach((year, yearIndex) => {
+					const value = item[year];
+					if (!isNaN(value)) {
+						seriesMap[city].data.push([yearIndex, Number(value)]);
+					}
+				});
+			});
+
+			// 转换为 ECharts 系列数组
+			const series = Object.keys(seriesMap).map((city) => ({
+				name: city,
+				type: 'scatter',
+				symbolSize: (params: number[]) => Math.sqrt(params[1]) / 10, // 根据值大小调整点的尺寸
+				data: seriesMap[city].data,
+				tooltip: {
+					trigger: 'item',
+					formatter: (params: any) => {
+						return `${params.seriesName}<br/>年份: ${params.data[0]}<br/>数值: ${params.data[1]}`;
+					},
+				},
+			}));
+
+			return {
+				xAxis: {
+					type: 'category',
+					data: headers.slice(1),
+					name: '年份',
+				},
+				yAxis: {
+					type: 'value',
+					name: '数值',
+				},
+				series,
+				legend: {
+					data: Object.keys(seriesMap), // 城市名称列表
+					type: 'scroll',
+					top: '90%', // 距离顶部为90%，即靠近底部
+					bottom: '5%', // 底部留白
+					left: 'center', // 水平居中
+					orient: 'horizontal', // 横向排列
+					alignTo: 'center',
+					padding: [5, 10], // 内边距
+					pageButtonItemGap: 5,
+					pageIconColor: '#666',
+					pageIconInactiveColor: '#ccc',
+					pageIconSize: 12,
+				},
+			};
 		case 'Radar':
 			// 雷达图：多个维度和对应的值（支持多组数据）
 			if (headers.length < 2) return commonData;
 
 			const indicator = headers.slice(1).map((name) => ({ name }));
 
+			// 每个年份对应一个雷达图数据项
 			const seriesData = commonData.map((item) => ({
-				name: item[headers[0]],
-				value: headers.slice(1).map((header) => item[header]),
+				name: String(item[headers[0]]), // 年份作为雷达图例名称
+				value: headers.slice(1).map((header) => item[header]), // 各项支出作为雷达图数值
 			}));
 
 			return {
-				radar: { indicator },
+				legend: {
+					data: commonData.map((item) => String(item[headers[0]])), // 雷达图例数据,
+					type: 'scroll',
+					top: '90%', // 距离顶部为90%，即靠近底部
+					bottom: '5%', // 底部留白
+					left: 'center', // 水平居中
+					orient: 'horizontal', // 横向排列
+					alignTo: 'center',
+					padding: [5, 10], // 内边距
+					pageButtonItemGap: 5,
+					pageIconColor: '#666',
+					pageIconInactiveColor: '#ccc',
+					pageIconSize: 12,
+				},
+				radar: {
+					indicator,
+					// shape: 'circle', // 可选圆形
+				},
 				series: [
 					{
 						type: 'radar',
 						data: seriesData,
-						areaStyle: {},
+						tooltip: {
+							trigger: 'item',
+						},
+						// areaStyle: {}, // 显示区域颜色
+						emphasis: {
+							areaStyle: { opacity: 0.3 }, // 强调时的透明度
+						},
 					},
 				],
 			};
+		case 'Pie':
+			// 饼图：label + value
+			if (headers.length < 2) return commonData;
 
+			const years = headers.slice(1); // ['第一产业', '第二产业', '第三产业']
+			const latestRow = commonData[commonData.length - 1]; // 默认显示最新年份
+			const pieData = years.map((name) => ({
+				name,
+				value: latestRow[name],
+			}));
+
+			return {
+				series: [
+					{
+						type: 'pie',
+						avoidLabelOverlap: false,
+						label: { show: false },
+						// emphasis: {
+						// 	label: { show: true, fontSize: '16', fontWeight: 'bold' },
+						// },
+						data: pieData,
+					},
+				],
+				legend: {
+					data: years,
+					top: '90%',
+					left: 'center',
+					orient: 'horizontal',
+				},
+				title: {
+					text: `${latestRow[headers[0]]} 年产业结构占比`,
+					left: 'center',
+				},
+			};
+
+		case 'HeatMap':
+			if (headers.length < 2) return commonData;
+
+			const cities = commonData.map((item) => item[headers[0]]); // 城市列表
+			console.log(cities);
+			const values = commonData.flatMap((item, yIndex) =>
+				headers.slice(1).map((year, xIndex) => {
+					const value = item[year];
+					return [xIndex, yIndex, isNaN(value) ? 0 : Number(value)];
+				})
+			);
+
+			// 获取所有数值用于设置 visualMap min/max
+			const allValues = values.map((v) => v[2]);
+
+			return {
+				xAxis: {
+					type: 'category',
+					data: headers.slice(1),
+					splitArea: { show: true },
+				},
+				yAxis: {
+					type: 'category',
+					data: cities,
+					splitArea: { show: true },
+				},
+				visualMap: {
+					min: Math.min(...allValues),
+					max: Math.max(...allValues),
+					calculable: true,
+					orient: 'horizontal',
+					left: 'center',
+					bottom: '15%',
+				},
+				tooltip: {
+					trigger: 'item',
+					formatter: (params: any) => {
+						const xIndex = params.data[0]; // 年份索引
+						const yIndex = params.data[1]; // 城市索引
+						const value = params.data[2]; // 数值
+
+						const year = headers[xIndex + 1]; // 年份
+						const city = cities[yIndex]; // 城市名
+
+						return `城市: ${city}<br/>年份: ${year}<br/>数值: ${value}`;
+					},
+				},
+				series: [
+					{
+						name: 'HeatMap',
+						type: 'heatmap',
+						label: { show: false, color: '#fff' },
+						itemStyle: {
+							borderWidth: 0.5,
+							borderColor: '#fff',
+						},
+						emphasis: {
+							itemStyle: {
+								shadowBlur: 10,
+								shadowColor: 'rgba(0, 0, 0, 0.5)',
+							},
+						},
+						data: values,
+					},
+				],
+			};
 		default:
 			// 默认返回原始对象数组
 			return commonData;

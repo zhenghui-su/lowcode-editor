@@ -224,6 +224,49 @@ export function ComponentAttr() {
 			options.series = seriesData;
 			updateComponentProps(curComponentId, { options });
 			setChartOptions(JSON.stringify(options, null, 2));
+		} else if (name == 'Bar' && curComponentId) {
+			const xAxisData = echartsData.xAxisData;
+			const seriesData = echartsData.series;
+			let options = JSON.parse(chartOptions);
+			options.xAxis.data = xAxisData;
+			options.series = seriesData;
+			updateComponentProps(curComponentId, { options });
+			setChartOptions(JSON.stringify(options, null, 2));
+		} else if (name === 'Radar' && curComponentId) {
+			const { legend, radar, series } = echartsData;
+			let options = JSON.parse(chartOptions);
+			options.legend = legend;
+			options.radar = radar;
+			options.series = series;
+			updateComponentProps(curComponentId, { options });
+			setChartOptions(JSON.stringify(options, null, 2));
+		} else if (name === 'Scatter' && curComponentId) {
+			const { xAxis, yAxis, series, legend } = echartsData;
+			let options = JSON.parse(chartOptions);
+			options.xAxis = xAxis;
+			options.yAxis = yAxis;
+			options.series = series;
+			options.legend = legend;
+			updateComponentProps(curComponentId, { options });
+			setChartOptions(JSON.stringify(options, null, 2));
+		} else if (name === 'Pie' && curComponentId) {
+			const { series, legend, title } = echartsData;
+			let options = JSON.parse(chartOptions);
+			options.series = series;
+			options.title = title;
+			options.legend = legend;
+			updateComponentProps(curComponentId, { options });
+			setChartOptions(JSON.stringify(options, null, 2));
+		} else if (name === 'HeatMap' && curComponentId) {
+			const { xAxis, yAxis, series, tooltip, visualMap } = echartsData;
+			let options = JSON.parse(chartOptions);
+			options.xAxis = xAxis;
+			options.yAxis = yAxis;
+			options.series = series;
+			options.tooltip = tooltip;
+			options.visualMap = visualMap;
+			updateComponentProps(curComponentId, { options });
+			setChartOptions(JSON.stringify(options, null, 2));
 		}
 	};
 
@@ -389,10 +432,10 @@ function updateLineFromOptions(curComponent: any, form: any) {
 		let areaStyleOpacity;
 		if (curComponent.props.options.series.length < 2) {
 			const { smooth: smooth1 } = curComponent.props.options.series[0];
-			smooth = smooth1;
+			smooth = smooth1 || false;
 			const areaStyleOpacity1 =
-				curComponent.props.options.series[0].areaStyle.opacity * 100;
-			areaStyleOpacity = areaStyleOpacity1;
+				curComponent.props.options.series[0].areaStyle?.opacity * 100;
+			areaStyleOpacity = areaStyleOpacity1 || 0;
 		}
 		const boundaryGap = curComponent.props.options.xAxis.boundaryGap;
 		form.setFieldsValue({
