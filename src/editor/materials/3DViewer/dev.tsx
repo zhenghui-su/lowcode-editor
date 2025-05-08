@@ -13,7 +13,8 @@ import * as THREE from 'three';
 function ThreeDViewer({ id, styles }: CommonComponentProps) {
 	const divRef = useRef<HTMLDivElement>(null);
 	const [isRotating, setIsRotating] = useState(true);
-	const modelPath = '/models/LittlestTokyo/LittlestTokyo.glb';
+	// const modelPath = '/models/LittlestTokyo/LittlestTokyo.glb';
+	const modelPath = '/models/langya_pavilion/langya_pavilion.glb';
 
 	// 拖拽功能
 	const [_, drag] = useDrag({
