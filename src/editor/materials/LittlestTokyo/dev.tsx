@@ -1,5 +1,5 @@
 import { Canvas, useLoader, useFrame } from '@react-three/fiber';
-import { useRef, Suspense, useEffect, useState } from 'react';
+import { useRef, Suspense, useEffect } from 'react';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js';
 import { OrbitControls, Environment } from '@react-three/drei';
@@ -10,17 +10,16 @@ import * as THREE from 'three';
 /**
  * @description 3D模型查看器 - 东京模型
  */
-function ThreeDViewer({ id, styles }: CommonComponentProps) {
+function LittlestTokyo({ id, styles }: CommonComponentProps) {
 	const divRef = useRef<HTMLDivElement>(null);
-	const [isRotating, setIsRotating] = useState(true);
-	// const modelPath = '/models/LittlestTokyo/LittlestTokyo.glb';
-	const modelPath = '/models/langya_pavilion/langya_pavilion.glb';
+	const modelPath = '/models/LittlestTokyo/LittlestTokyo.glb';
+	// const modelPath = '/models/langya_pavilion/langya_pavilion.glb';
 
 	// 拖拽功能
 	const [_, drag] = useDrag({
-		type: 'ThreeDViewer',
+		type: 'LittlestTokyo',
 		item: {
-			type: 'ThreeDViewer',
+			type: 'LittlestTokyo',
 			dragType: 'move',
 			id: id,
 		},
@@ -35,11 +34,6 @@ function ThreeDViewer({ id, styles }: CommonComponentProps) {
 		e.stopPropagation();
 	};
 
-	// 切换旋转状态
-	const toggleRotation = () => {
-		setIsRotating(!isRotating);
-	};
-
 	return (
 		<div
 			ref={divRef}
@@ -48,7 +42,7 @@ function ThreeDViewer({ id, styles }: CommonComponentProps) {
 			style={{ ...styles, userSelect: 'none' }}
 		>
 			<Canvas
-				camera={{ position: [10, 5, 10], fov: 45 }}
+				camera={{ position: [10, 5, 10], fov: 30 }}
 				style={{ position: 'absolute' }}
 				onPointerDown={handleCanvasPointerDown}
 				onPointerUp={handleCanvasPointerDown}
@@ -57,7 +51,7 @@ function ThreeDViewer({ id, styles }: CommonComponentProps) {
 				<pointLight position={[10, 10, 10]} intensity={1.5} />
 				<directionalLight position={[-5, 5, 5]} intensity={1} castShadow />
 				<Suspense fallback={<Fallback />}>
-					<TokyoModel modelPath={modelPath} isRotating={isRotating} />
+					<TokyoModel modelPath={modelPath} />
 					<Environment preset='city' />
 				</Suspense>
 				<OrbitControls
@@ -68,32 +62,16 @@ function ThreeDViewer({ id, styles }: CommonComponentProps) {
 					maxDistance={20}
 				/>
 			</Canvas>
-			<div className='absolute bottom-4 left-4 z-10'>
-				<button
-					onClick={toggleRotation}
-					className='px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors'
-				>
-					{isRotating ? '暂停旋转' : '开始旋转'}
-				</button>
-			</div>
 		</div>
 	);
 }
 
 // 东京模型加载组件
-const TokyoModel = ({
-	modelPath,
-	isRotating,
-}: {
-	modelPath: string;
-	isRotating: boolean;
-}) => {
+const TokyoModel = ({ modelPath }: { modelPath: string }) => {
 	// 创建并配置DRACOLoader
 	const dracoLoader = new DRACOLoader();
 	// 设置DRACO解码器路径 - 使用CDN或本地路径
-	dracoLoader.setDecoderPath(
-		'https://www.gstatic.com/draco/versioned/decoders/1.5.6/'
-	);
+	dracoLoader.setDecoderPath('/models/draco/gltf/');
 	// 设置解码配置
 	dracoLoader.setDecoderConfig({ type: 'js' });
 
@@ -110,12 +88,7 @@ const TokyoModel = ({
 
 	// 启用模型自带的动画
 	useFrame(({ clock }) => {
-		if (
-			modelRef.current &&
-			gltf.animations &&
-			gltf.animations.length > 0 &&
-			isRotating
-		) {
+		if (modelRef.current && gltf.animations && gltf.animations.length > 0) {
 			// 使用模型自带的动画，而不是手动旋转
 			const mixer = new THREE.AnimationMixer(modelRef.current);
 			const action = mixer.clipAction(gltf.animations[0]);
@@ -152,4 +125,4 @@ const Fallback = () => {
 	);
 };
 
-export default ThreeDViewer;
+export default LittlestTokyo;

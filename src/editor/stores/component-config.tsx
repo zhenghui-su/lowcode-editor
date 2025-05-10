@@ -49,8 +49,10 @@ import FlexContainerDev from '../materials/FlexContainer/dev';
 import FlexContainerProd from '../materials/FlexContainer/prod';
 import ModelViewerDev from '../materials/ModelViewer/dev';
 import ModelViewerProd from '../materials/ModelViewer/prod';
-import ThreeDViewerDev from '../materials/3DViewer/dev';
-import ThreeDViewerProd from '../materials/3DViewer/prod';
+import LittlestTokyoDev from '../materials/LittlestTokyo/dev';
+import LittlestTokyoProd from '../materials/LittlestTokyo/prod';
+import LangYaDev from '../materials/Langya/dev';
+import LangYaProd from '../materials/Langya/prod';
 
 import { Model } from '@visactor/vmind';
 import BaseTexture from '../../assets/baseTexture.png';
@@ -191,12 +193,19 @@ export const useComponentConfigStore = create<State & Action>((set) => ({
 				},
 			],
 		},
-		ThreeDViewer: {
-			name: 'ThreeDViewer',
-			desc: '3D模型展示器',
+		LittlestTokyo: {
+			name: 'LittlestTokyo',
+			desc: '东京商店模型',
 			defaultProps: {},
-			dev: ThreeDViewerDev,
-			prod: ThreeDViewerProd,
+			dev: LittlestTokyoDev,
+			prod: LittlestTokyoProd,
+		},
+		LangYa: {
+			name: 'LangYa',
+			desc: '琅琊楼模型',
+			defaultProps: {},
+			dev: LangYaDev,
+			prod: LangYaProd,
 		},
 		Button: {
 			name: 'Button',
